@@ -12,7 +12,6 @@
 </head>
 <body class="min-h-screen text-slate-800 antialiased pb-10">
 
-  <!-- هدر رستوران -->
   <header class="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg mb-6">
     <div class="max-w-2xl mx-auto text-center">
       <h1 class="text-2xl font-extrabold" id="restaurant-name">در حال بارگذاری...</h1>
@@ -20,86 +19,70 @@
     </div>
   </header>
 
-  <!-- بخش دسته‌بندی‌ها -->
   <div class="max-w-2xl mx-auto px-4">
-    <div id="categories-container" class="flex overflow-x-auto gap-2 mb-6 pb-2 scrollbar-hide">
-      <!-- دسته‌بندی‌ها اینجا لود می‌شن -->
-    </div>
-
-    <!-- لیست غذاها -->
-    <div id="menu-list" class="space-y-4">
+    <div id="menu-list" class="space-y-6">
       <p class="text-center text-slate-500 py-10">در حال دریافت منو...</p>
     </div>
   </div>
 
   <script>
     const API_BASE = 'https://menuqr-8v3o.onrender.com/api';
-    // ما فعلا از آیدی رستوران تست استفاده می‌کنیم (چون هنوز لینک اختصاصی نساختیم)
-    // بعدا این رو با آیدی واقعی رستوران تو عوض می‌کنیم
+    
+    // گرفتن slug از آدرس سایت (مثل: menu.html?slug=abc123)
     const urlParams = new URLSearchParams(window.location.search);
-    const restaurantId = urlParams.get('r') || 'test-id'; 
+    const slug = urlParams.get('slug');
 
-    // گرفتن اطلاعات منو
     async function fetchMenu() {
+      if (!slug) {
+        document.getElementById('restaurant-name').innerText = 'خطا در لینک';
+        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">لطفا با لینک اختصاصی رستوران وارد شوید (پارامتر slug وجود ندارد).</p>';
+        return;
+      }
+
       try {
-        // ⚠️ این آدرس رو با توجه به بک‌اند تنظیم کردیم
-        const res = await fetch(`${API_BASE}/public/menu/${restaurantId}`); 
+        const res = await fetch(`${API_BASE}/public/menu/${slug}`); 
         
-        // اگه بک‌اند ما این آدرس رو نداشت، یه ارور می‌ده که فعلا هندل می‌کنیم
-        if (!res.ok) throw new Error('not found');
+        if (!res.ok) throw new Error('منو پیدا نشد');
         
         const data = await res.json();
         
         // نمایش اسم رستوران
-        document.getElementById('restaurant-name').innerText = data.restaurantName || 'منوی رستوران';
+        document.getElementById('restaurant-name').innerText = data.restaurant.restaurantName || 'منوی رستوران';
         
-        renderMenu(data.categories, data.items);
+        renderMenu(data.categories);
       } catch (error) {
-        // چون آیدی تست هست، فعلا یه حالت دمو نشون می‌دیم تا ظاهر رو ببینی
-        document.getElementById('restaurant-name').innerText = 'کافه رستوران نیما';
-        renderDemo();
+        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">خطا: منویی با این آدرس پیدا نشد.</p>';
       }
     }
 
-    function renderMenu(categories, items) {
-      const catContainer = document.getElementById('categories-container');
+    function renderMenu(categories) {
       const listContainer = document.getElementById('menu-list');
 
-      // نمایش دسته‌بندی‌ها
-      catContainer.innerHTML = categories.map(c => `
-        <button class="whitespace-nowrap px-4 py-2 rounded-full bg-white border border-slate-200 text-sm font-medium hover:bg-indigo-50 transition-colors">
-          ${c.name}
-        </button>
-      `).join('');
-
-      // نمایش غذاها
-      if(items.length === 0) {
-         listContainer.innerHTML = '<p class="text-center text-slate-500">هنوز غذایی ثبت نشده است.</p>';
+      if(categories.length === 0) {
+         listContainer.innerHTML = '<p class="text-center text-slate-500">هنوز غذایی به منو اضافه نشده است.</p>';
          return;
       }
 
-      listContainer.innerHTML = items.map(item => `
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center">
-          ${item.image 
-            ? `<img src="https://menuqr-8v3o.onrender.com${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` 
-            : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">بدون عکس</div>`}
-          <div class="flex-1">
-            <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
-            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
-            <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
+      // رندر کردن دسته‌بندی‌ها و غذاهای هر دسته
+      listContainer.innerHTML = categories.map(cat => `
+        <div class="mb-8">
+          <h2 class="text-lg font-extrabold text-indigo-900 mb-4 border-b border-indigo-100 pb-2">${cat.name}</h2>
+          <div class="space-y-4">
+            ${cat.items.map(item => `
+              <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center">
+                ${item.image 
+                  ? `<img src="https://menuqr-8v3o.onrender.com${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` 
+                  : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
+                <div class="flex-1">
+                  <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
+                  <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
+                  <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
+                </div>
+              </div>
+            `).join('')}
           </div>
         </div>
       `).join('');
-    }
-
-    // یه دمو برای اینکه ببینی ظاهرش چطوره
-    function renderDemo() {
-        const demoCats = [{name: 'غذای اصلی'}, {name: 'نوشیدنی'}, {name: 'دسر'}];
-        const demoItems = [
-            { name: 'کباب کوبیده گوسفندی', price: 250000, description: 'گوشت گوسفندی تازه با برنج ایرانی و کره', image: '' },
-            { name: 'پیتزا پپرونی', price: 180000, description: 'خمیر تازه، سس مخصوص، پنیر موزارلا', image: '' }
-        ];
-        renderMenu(demoCats, demoItems);
     }
 
     fetchMenu();
