@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MenuQR | پنل مدیریت</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- کتابخانه قوی‌تر و پایدارتر برای QR Code -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <style>
@@ -29,8 +28,8 @@
         <p class="text-sm text-slate-500 mt-2 font-medium">پنل مدیریت رستوران</p>
       </div>
       
-      <!-- autocomplete="off" جلوی پاک شدن خودکار رو می‌گیره -->
-      <form id="login-form" class="space-y-5" autocomplete="off">
+      <!-- onsubmit="return false;" جلوی رفرش شدن صفحه رو کاملا می‌گیره -->
+      <form id="login-form" class="space-y-5" onsubmit="return false;">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-2">ایمیل</label>
           <input type="email" id="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="example@gmail.com">
@@ -39,10 +38,10 @@
           <label class="block text-sm font-semibold text-slate-700 mb-2">رمز عبور</label>
           <input type="password" id="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="••••••••">
         </div>
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">ورود به پنل</button>
+        <button type="button" id="btn-login" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">ورود به پنل</button>
       </form>
 
-      <form id="register-form" class="space-y-4 hidden" autocomplete="off">
+      <form id="register-form" class="space-y-4 hidden" onsubmit="return false;">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1">نام و نام خانوادگی</label>
           <input type="text" id="reg-name" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm" placeholder="مثلا: نیما قربانی">
@@ -59,11 +58,11 @@
           <label class="block text-sm font-semibold text-slate-700 mb-1">رمز عبور</label>
           <input type="password" id="reg-password" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="حداقل ۶ کاراکتر">
         </div>
-        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-[0.98] mt-2">ساخت حساب جدید</button>
+        <button type="button" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-[0.98] mt-2">ساخت حساب جدید</button>
       </form>
 
       <div class="mt-6 text-center">
-        <button id="toggle-auth" class="text-sm text-indigo-600 font-bold hover:underline">حساب ندارید؟ ثبت‌نام کنید</button>
+        <button type="button" id="toggle-auth" class="text-sm text-indigo-600 font-bold hover:underline">حساب ندارید؟ ثبت‌نام کنید</button>
       </div>
 
       <p id="auth-error" class="text-red-500 text-sm font-medium text-center mt-4 hidden bg-red-50 py-2 rounded-lg"></p>
@@ -96,9 +95,9 @@
         <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
         ساخت دسته‌بندی جدید
       </h2>
-      <form id="category-form" class="flex gap-3">
+      <form id="category-form" class="flex gap-3" onsubmit="return false;">
         <input type="text" id="cat-name" placeholder="مثلا: پیش‌غذا، نوشیدنی..." required class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
-        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">افزودن</button>
+        <button type="button" id="btn-add-cat" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">افزودن</button>
       </form>
     </div>
 
@@ -107,7 +106,7 @@
         <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
         افزودن غذای جدید
       </h2>
-      <form id="item-form" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <form id="item-form" class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="return false;">
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">نام غذا</label>
           <input type="text" id="item-name" placeholder="مثلا: کباب کوبیده" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
@@ -130,7 +129,7 @@
           <label class="block text-xs font-semibold text-slate-600 mb-1">توضیحات (اختیاری)</label>
           <textarea id="item-desc" rows="2" placeholder="مواد اولیه، نکات..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm resize-none"></textarea>
         </div>
-        <button type="submit" class="md:col-span-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-[0.98] mt-2">افزودن به منو</button>
+        <button type="button" id="btn-add-item" class="md:col-span-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-[0.98] mt-2">افزودن به منو</button>
       </form>
     </div>
 
@@ -149,86 +148,140 @@
     const API_BASE = 'https://menuqr-8v3o.onrender.com/api'; 
     let token = localStorage.getItem('menuqr_token');
     let currentSlug = '';
-    let qrCodeInstance = null;
 
-    if (token) showDashboard();
+    document.addEventListener('DOMContentLoaded', () => {
+      if (token) showDashboard();
 
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const authTitle = document.getElementById('auth-title');
-    const toggleAuthBtn = document.getElementById('toggle-auth');
+      document.getElementById('toggle-auth').addEventListener('click', () => {
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const authTitle = document.getElementById('auth-title');
+        const toggleBtn = document.getElementById('toggle-auth');
+        document.getElementById('auth-error').classList.add('hidden');
 
-    toggleAuthBtn.addEventListener('click', () => {
-      document.getElementById('auth-error').classList.add('hidden');
-      if(loginForm.classList.contains('hidden')) {
-        loginForm.classList.remove('hidden');
-        registerForm.classList.add('hidden');
-        authTitle.innerText = 'ورود به MenuQR';
-        toggleAuthBtn.innerText = 'حساب ندارید؟ ثبت‌نام کنید';
-      } else {
-        loginForm.classList.add('hidden');
-        registerForm.classList.remove('hidden');
-        authTitle.innerText = 'ثبت‌نام در MenuQR';
-        toggleAuthBtn.innerText = 'حساب دارید؟ وارد شوید';
-      }
-    });
+        if(loginForm.classList.contains('hidden')) {
+          loginForm.classList.remove('hidden');
+          registerForm.classList.add('hidden');
+          authTitle.innerText = 'ورود به MenuQR';
+          toggleBtn.innerText = 'حساب ندارید؟ ثبت‌نام کنید';
+        } else {
+          loginForm.classList.add('hidden');
+          registerForm.classList.remove('hidden');
+          authTitle.innerText = 'ثبت‌نام در MenuQR';
+          toggleBtn.innerText = 'حساب دارید؟ وارد شوید';
+        }
+      });
 
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      const err = document.getElementById('auth-error');
-      btn.innerText = 'در حال ساخت...'; btn.disabled = true; err.classList.add('hidden');
+      document.getElementById('btn-register').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-register');
+        const err = document.getElementById('auth-error');
+        btn.innerText = 'در حال ساخت...'; btn.disabled = true; err.classList.add('hidden');
 
-      try {
-        const res = await fetch(`${API_BASE}/auth/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            name: document.getElementById('reg-name').value,
-            restaurantName: document.getElementById('reg-restaurant').value,
-            email: document.getElementById('reg-email').value, 
-            password: document.getElementById('reg-password').value 
-          })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'خطا در ثبت‌نام');
+        try {
+          const res = await fetch(`${API_BASE}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              name: document.getElementById('reg-name').value,
+              restaurantName: document.getElementById('reg-restaurant').value,
+              email: document.getElementById('reg-email').value, 
+              password: document.getElementById('reg-password').value 
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'خطا در ثبت‌نام');
+          
+          alert('حساب ساخته شد! حالا وارد شوید.');
+          document.getElementById('toggle-auth').click(); 
+          document.getElementById('email').value = document.getElementById('reg-email').value;
+        } catch (error) {
+          err.innerText = error.message; err.classList.remove('hidden');
+        } finally {
+          btn.innerText = 'ساخت حساب جدید'; btn.disabled = false;
+        }
+      });
+
+      document.getElementById('btn-login').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-login');
+        const err = document.getElementById('auth-error');
+        btn.innerText = 'در حال بررسی...'; btn.disabled = true; err.classList.add('hidden');
+
+        try {
+          const res = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              email: document.getElementById('email').value, 
+              password: document.getElementById('password').value 
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'خطا در ورود');
+          
+          token = data.token;
+          localStorage.setItem('menuqr_token', token);
+          showDashboard();
+        } catch (error) {
+          err.innerText = error.message; err.classList.remove('hidden');
+        } finally {
+          btn.innerText = 'ورود به پنل'; btn.disabled = false;
+        }
+      });
+
+      document.getElementById('btn-add-cat').addEventListener('click', async () => {
+        const name = document.getElementById('cat-name').value;
+        const btn = document.getElementById('btn-add-cat');
+        if(!name) return;
         
-        alert('حساب ساخته شد! حالا وارد شوید.');
-        toggleAuthBtn.click(); 
-        document.getElementById('email').value = document.getElementById('reg-email').value;
-      } catch (error) {
-        err.innerText = error.message; err.classList.remove('hidden');
-      } finally {
-        btn.innerText = 'ساخت حساب جدید'; btn.disabled = false;
-      }
-    });
+        btn.innerText = '...'; btn.disabled = true;
+        try {
+          const res = await fetch(`${API_BASE}/categories`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ name })
+          });
+          if (!res.ok) throw new Error('خطا');
+          document.getElementById('cat-name').value = '';
+          fetchCategories();
+        } catch (err) {
+          alert('خطا در ساخت دسته‌بندی');
+        } finally {
+          btn.innerText = 'افزودن'; btn.disabled = false;
+        }
+      });
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      const err = document.getElementById('auth-error');
-      btn.innerText = 'در حال بررسی...'; btn.disabled = true; err.classList.add('hidden');
-
-      try {
-        const res = await fetch(`${API_BASE}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            email: document.getElementById('email').value, 
-            password: document.getElementById('password').value 
-          })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'خطا در ورود');
+      document.getElementById('btn-add-item').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-add-item');
+        const formData = new FormData();
+        formData.append('name', document.getElementById('item-name').value);
+        formData.append('price', document.getElementById('item-price').value);
+        formData.append('category', document.getElementById('item-cat').value);
+        formData.append('description', document.getElementById('item-desc').value);
         
-        token = data.token;
-        localStorage.setItem('menuqr_token', token);
-        showDashboard();
-      } catch (error) {
-        err.innerText = error.message; err.classList.remove('hidden');
-      } finally {
-        btn.innerText = 'ورود به پنل'; btn.disabled = false;
-      }
+        const imageFile = document.getElementById('item-image').files[0];
+        if (imageFile) formData.append('image', imageFile);
+
+        const originalText = btn.innerText;
+        btn.innerText = 'در حال ذخیره...'; btn.disabled = true;
+
+        try {
+          const res = await fetch(`${API_BASE}/items`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+          });
+          if (!res.ok) {
+             const d = await res.json();
+             throw new Error(d.message || 'خطا');
+          }
+          document.getElementById('item-form').reset();
+          fetchItems();
+        } catch (err) {
+          alert('خطا: ' + err.message);
+        } finally {
+          btn.innerText = originalText; btn.disabled = false;
+        }
+      });
     });
 
     async function showDashboard() {
@@ -244,12 +297,11 @@
         const res = await fetch(`${API_BASE}/auth/me`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (res.status === 401) { logout(); return; }
         if (!res.ok) throw new Error('auth error');
         const user = await res.json();
-        
         currentSlug = user.slug;
         generateQR(currentSlug);
-
       } catch (e) {
         console.error('خطا در گرفتن اطلاعات کاربر', e);
         generateQR('e7185c4e'); 
@@ -262,14 +314,18 @@
       container.innerHTML = ''; 
       
       try {
-        qrCodeInstance = new QRCode(container, {
-          text: menuUrl,
-          width: 128,
-          height: 128,
-          colorDark : "#4f46e5",
-          colorLight : "#ffffff",
-          correctLevel : QRCode.CorrectLevel.H
-        });
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(container, {
+            text: menuUrl,
+            width: 128,
+            height: 128,
+            colorDark : "#4f46e5",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+          });
+        } else {
+          container.innerHTML = '<p class="text-xs text-red-500">کتابخانه QR لود نشد.</p>';
+        }
       } catch(e) {
         console.error("کتابخانه QR لود نشد", e);
       }
@@ -309,62 +365,4 @@
         
         const cats = await res.json();
         select.innerHTML = '<option value="">لطفا یک دسته‌بندی انتخاب کنید...</option>' + 
-          cats.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
-      } catch (e) {
-        console.error('خطا در گرفتن دسته‌بندی‌ها');
-      }
-    }
-
-    document.getElementById('category-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('cat-name').value;
-      const btn = e.target.querySelector('button');
-      btn.innerText = '...'; btn.disabled = true;
-
-      try {
-        const res = await fetch(`${API_BASE}/categories`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` 
-          },
-          body: JSON.stringify({ name })
-        });
-        if (!res.ok) throw new Error('خطا در ساخت دسته‌بندی');
-        
-        document.getElementById('cat-name').value = '';
-        fetchCategories();
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        btn.innerText = 'افزودن'; btn.disabled = false;
-      }
-    });
-
-    async function fetchItems() {
-      const list = document.getElementById('items-list');
-      try {
-        const res = await fetch(`${API_BASE}/items`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) { logout(); return; }
-        
-        const items = await res.json();
-        if (items.length === 0) {
-          list.innerHTML = '<p class="text-slate-400 text-center font-medium py-4">هنوز غذایی به منو اضافه نکردی.</p>';
-          return;
-        }
-
-        list.innerHTML = items.map(item => `
-          <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all group">
-            <div class="flex items-center gap-4">
-              ${item.image 
-                ? `<img src="https://menuqr-8v3o.onrender.com${item.image}" class="w-14 h-14 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform">` 
-                : `<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>`}
-              <div>
-                <p class="font-bold text-slate-800 text-sm ${!item.isActive ? 'text-slate-400 line-through' : ''}">${item.name}</p>
-                <p class="text-xs font-semibold text-indigo-600 mt-1">${item.price.toLocaleString()} تومان</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              
+          cats.map(c => `<option value="${c._id}">${c.name
