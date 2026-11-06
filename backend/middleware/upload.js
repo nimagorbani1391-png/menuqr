@@ -1,17 +1,24 @@
-// آپلود عکس با multer توی پوشه uploads
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const path = require('path');
-const crypto = require('crypto');
 
-const ALLOWED = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' };
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, '..', 'uploads')),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${crypto.randomBytes(6).toString('hex')}${ALLOWED[file.mimetype]}`),
+// تنظیمات اتصال به حساب کلادیناری تو
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => (ALLOWED[file.mimetype] ? cb(null, true) : cb(new Error('INVALID_FILE_TYPE'))),
+// تنظیمات ذخیره‌سازی
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'menuqr_foods', // اسم پوشه‌ای که عکس‌ها توش ذخیره می‌شن
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ width: 800, crop: 'limit', quality: 'auto' }] // فشرده‌سازی خودکار
+  }
 });
+
+const upload = multer({ storage: storage });
+
+module.exports = upload;
