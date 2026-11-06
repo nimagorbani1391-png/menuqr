@@ -153,6 +153,15 @@ async function fetchUserData() {
 }
 
 function openPublicMenu() {
+    // ساخت یک لینک مجازی برای باز شدن سریع‌تر و مطمئن‌تر
+    const link = document.createElement('a');
+    link.href = `menu.html?slug=${currentSlug}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+} {
     window.open(`menu.html?slug=${currentSlug}`, '_blank');
 }
 
