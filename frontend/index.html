@@ -34,10 +34,8 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
       transition: background 0.3s ease;
-      transform-style: preserve-3d;
     }
     .glass-card:hover { background: rgba(255, 255, 255, 0.1); }
-    .glass-card h3, .glass-card p, .glass-card svg { transform: translateZ(30px); }
 
     .phone-mockup { perspective: 1000px; }
     .phone-body {
@@ -66,22 +64,22 @@
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative">
 
   <nav class="absolute w-full z-50 top-0 bg-white/60 backdrop-blur-md border-b border-white/20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center h-24 gap-4">
-      
-      <!-- کانتینر عکس با سایز ثابت (shrink-0) -->
-      <div class="w-14 h-14 shrink-0 relative flex items-center justify-center bg-slate-100 rounded-2xl overflow-hidden border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]">
-        <img src="logo.png" alt="MenuQR" class="w-full h-full object-cover">
-      </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center h-24 gap-4">
+        
+        <!-- کانتینر عکس با سایز ثابت -->
+        <div class="w-14 h-14 shrink-0 relative flex items-center justify-center bg-slate-100 rounded-2xl overflow-hidden border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+          <img src="logo.png" alt="MenuQR" class="w-full h-full object-cover">
+        </div>
 
-      <!-- متن برند -->
-      <div class="flex flex-col justify-center">
-        <span class="font-black text-2xl tracking-tight text-slate-900 leading-none">منو کیو آر</span>
-        <span class="text-[10px] text-indigo-600 font-bold mt-1 tracking-wider uppercase">Digital Menu System</span>
-      </div>
+        <!-- متن برند -->
+        <div class="flex flex-col justify-center">
+          <span class="font-black text-2xl tracking-tight text-slate-900 leading-none">منو کیو آر</span>
+          <span class="text-[10px] text-indigo-600 font-bold mt-1 tracking-wider uppercase">Digital Menu System</span>
+        </div>
 
+      </div>
     </div>
-  </div>
   </nav>
 
   <header class="relative overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32 bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900">
@@ -150,44 +148,53 @@
     </div>
   </div>
 
-  <div class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 relative overflow-hidden">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-lg bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+  <!-- ⚠️ بخش دوم (امکانات و نظرات و سوالات) را دقیقاً زیر این خط اضافه کنید -->
+  <!-- بخش امکانات (با المان جادویی) -->
+<div class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 relative overflow-hidden">
+  
+  <!-- 🔮 المان جادویی (Blob) -->
+  <div id="magic-blob" class="absolute top-1/3 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 rounded-full mix-blend-screen filter blur-[80px] opacity-40 pointer-events-none transition-transform duration-75 ease-out"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center mb-20" data-aos="fade-up">
-        <p class="text-3xl md:text-4xl font-black text-white">چرا باید از منو کیو آر استفاده کنید؟</p>
-      </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20" data-aos="fade-up">
+      <p class="text-3xl md:text-4xl font-black text-white">چرا باید از منو کیو آر استفاده کنید؟</p>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="glass-card p-8 rounded-3xl relative z-10" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2" data-aos="fade-up" data-aos-delay="0">
-          <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">تولید QR Code اختصاصی</h3>
-          <p class="text-slate-300 leading-relaxed text-sm">سیستم به‌طور خودکار کدهای QR اختصاصی را برای رستوران شما تولید می‌کند تا مشتریان با اسکن کیو ار کد اختصاصی رستوران، به منو دسترسی داشته باشند.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- کارت 1 (بدون کج شدن) -->
+      <div class="glass-card p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
         </div>
-        
-        <div class="glass-card p-8 rounded-3xl relative z-10" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2" data-aos="fade-up" data-aos-delay="100">
-          <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">مدیریت آنی و لحظه‌ای</h3>
-          <p class="text-slate-300 leading-relaxed text-sm">مدیریت لحظه‌ای قیمت‌ها و موجودی محصولات. تغییرات اعمال‌شده در پنل مدیریت، بلافاصله بر روی منوی در دسترس مشتریان به‌روزرسانی می‌شوند.</p>
-        </div>
-        
-        <div class="glass-card p-8 rounded-3xl relative z-10" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2" data-aos="fade-up" data-aos-delay="200">
-          <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">نمایش تصویری محصولات</h3>
-          <p class="text-slate-300 leading-relaxed text-sm">نمایش تصویری جذاب از محصولات جهت افزایش نرخ تبدیل مشتریان. عکس‌های باکیفیت به مشتریان در انتخاب بهتر و سریع‌تر کمک شایانی می‌کنند.</p>
-        </div>
+        <h3 class="text-xl font-bold text-white mb-3">تولید QR Code اختصاصی</h3>
+        <p class="text-slate-300 leading-relaxed text-sm">سیستم به‌طور خودکار کدهای QR اختصاصی را برای رستوران شما تولید می‌کند تا مشتریان با اسکن کیو ار کد اختصاصی رستوران، به منو دسترسی داشته باشند.</p>
       </div>
+      
+      <!-- کارت 2 (بدون کج شدن) -->
+      <div class="glass-card p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">مدیریت آنی و لحظه‌ای</h3>
+        <p class="text-slate-300 leading-relaxed text-sm">مدیریت لحظه‌ای قیمت‌ها و موجودی محصولات. تغییرات اعمال‌شده در پنل مدیریت، بلافاصله بر روی منوی در دسترس مشتریان به‌روزرسانی می‌شوند.</p>
+      </div>
+      
+      <!-- کارت 3 (بدون کج شدن) -->
+      <div class="glass-card p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">نمایش تصویری محصولات</h3>
+        <p class="text-slate-300 leading-relaxed text-sm">نمایش تصویری جذاب از محصولات جهت افزایش نرخ تبدیل مشتریان. عکس‌های باکیفیت به مشتریان در انتخاب بهتر و سریع‌تر کمک شایانی می‌کنند.</p>
+      </div>
+      
     </div>
   </div>
+</div>
 
-  <!-- ⚠️ بخش دوم (نظرات، سوالات متداول و فوتر) را دقیقاً زیر این خط اضافه کنید -->
-  <div class="py-24 bg-white relative">
+<!-- بخش نظرات مشتریان -->
+<div class="py-24 bg-white relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16" data-aos="fade-up">
       <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">رستوران‌داران درباره ما چه می‌گویند؟</h2>
@@ -222,6 +229,7 @@
   </div>
 </div>
 
+<!-- بخش سوالات متداول (FAQ) -->
 <div class="py-24 bg-slate-900 relative border-t border-slate-800">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16" data-aos="fade-up">
@@ -280,7 +288,8 @@
 </footer>
 
 <!-- ⚠️ بخش سوم (دکمه شناور و اسکریپت‌ها) را دقیقاً زیر این خط اضافه کنید -->
-    <a href="https://rubika.ir/IM_NIMA_GORBANI" target="_blank" class="fixed bottom-6 left-6 z-50 group flex items-center justify-center">
+    <!-- دکمه شناور پشتیبانی روبیکا -->
+  <a href="https://rubika.ir/IM_NIMA_GORBANI" target="_blank" class="fixed bottom-6 left-6 z-50 group flex items-center justify-center">
     <div class="relative">
       <div class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75" style="animation-duration: 2s;"></div>
       <div class="relative bg-gradient-to-tr from-indigo-600 to-purple-600 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
@@ -291,10 +300,11 @@
   </a>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
   <script>
+    // ۱. راه‌اندازی انیمیشن‌های اسکرول
     AOS.init({ duration: 800, once: true, offset: 100 });
 
+    // ۲. کدهای شمارنده متحرک
     const counters = document.querySelectorAll('.counter-value');
     const speed = 200;
     const observer = new IntersectionObserver((entries, obs) => {
@@ -311,6 +321,19 @@
       });
     }, { threshold: 0.5 });
     counters.forEach(counter => observer.observe(counter));
+
+    // ۳. افکت جادویی اسکرول برای Blob
+    window.addEventListener('scroll', () => {
+      const blob = document.getElementById('magic-blob');
+      if (blob) {
+        const scrollY = window.scrollY;
+        const yPos = scrollY * 0.3; // سرعت حرکت عمودی
+        const rotate = scrollY * 0.1; // میزان چرخش
+        const scale = 1 + (Math.sin(scrollY * 0.002) * 0.2); // بزرگ و کوچیک شدن
+        
+        blob.style.transform = `translateY(${yPos}px) rotate(${rotate}deg) scale(${scale})`;
+      }
+    });
   </script>
 </body>
 </html>
