@@ -141,6 +141,7 @@ async function fetchUserData() {
         const user = await res.json();
         
         currentSlug = user.slug;
+        document.getElementById('public-menu-btn').href = `menu.html?slug=${user.slug}&t=${Date.now()}`;
         userRestaurantName = user.restaurantName;
         
         document.getElementById('dash-restaurant-name').innerText = user.restaurantName || 'رستوران شما';
@@ -152,7 +153,7 @@ async function fetchUserData() {
     }
 }
 
-function openPublicMenu() {
+ {
     // ساخت یک لینک مجازی برای باز شدن سریع‌تر و مطمئن‌تر
     const link = document.createElement('a');
     link.href = `menu.html?slug=${currentSlug}`;
