@@ -14,7 +14,6 @@
     body { font-family: 'Vazirmatn', sans-serif; }
     .font-ingo { font-family: 'Playfair Display', serif; }
     
-    /* استایل شیشه‌ای دکمه‌ها */
     .glass-btn {
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(12px);
@@ -28,7 +27,6 @@
       transform: translateY(-2px);
     }
 
-    /* استایل شیشه‌ای کارت‌ها */
     .glass-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(16px);
@@ -38,14 +36,9 @@
       transition: background 0.3s ease;
       transform-style: preserve-3d;
     }
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    .glass-card h3, .glass-card p, .glass-card svg {
-      transform: translateZ(30px);
-    }
+    .glass-card:hover { background: rgba(255, 255, 255, 0.1); }
+    .glass-card h3, .glass-card p, .glass-card svg { transform: translateZ(30px); }
 
-    /* استایل گوشی سه بعدی */
     .phone-mockup { perspective: 1000px; }
     .phone-body {
       width: 280px;
@@ -72,7 +65,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative">
 
-  <!-- منوی بالا -->
   <nav class="absolute w-full z-50 top-0 bg-white/60 backdrop-blur-md border-b border-white/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center h-24">
@@ -88,7 +80,6 @@
     </div>
   </nav>
 
-  <!-- بخش معرفی (Hero) -->
   <header class="relative overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32 bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -103,14 +94,9 @@
             «دیگر نیازی به چاپ منو نیست. مشتریان با اسکن یک QR Code، منوی شما را با عکس‌های باکیفیت مشاهده می‌کنند. قیمت‌ها را در ۲ ثانیه تغییر دهید.»
           </p>
           
-          <!-- دکمه‌های اصلاح شده (به login.html وصل شدن) -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl">
-              ورود به پنل مدیریت
-            </a>
-            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl bg-indigo-500/80 border-indigo-400">
-              شروع رایگان
-            </a>
+            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl">ورود به پنل مدیریت</a>
+            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl bg-indigo-500/80 border-indigo-400">شروع رایگان</a>
           </div>
         </div>
 
@@ -123,65 +109,43 @@
               <div class="space-y-2">
                 <div class="bg-white p-2 rounded-lg shadow-sm flex gap-2 items-center">
                   <div class="w-12 h-12 bg-orange-200 rounded-md flex items-center justify-center text-xl">🍢</div>
-                  <div>
-                    <h4 class="font-bold text-xs">کباب کوبیده</h4>
-                    <p class="text-[10px] font-bold text-indigo-600">۲۵۰,۰۰۰ تومان</p>
-                  </div>
+                  <div><h4 class="font-bold text-xs">کباب کوبیده</h4><p class="text-[10px] font-bold text-indigo-600">۲۵۰,۰۰۰ تومان</p></div>
                 </div>
                 <div class="bg-white p-2 rounded-lg shadow-sm flex gap-2 items-center">
                   <div class="w-12 h-12 bg-green-200 rounded-md flex items-center justify-center text-xl">🍕</div>
-                  <div>
-                    <h4 class="font-bold text-xs">پیتزا پپرونی</h4>
-                    <p class="text-[10px] font-bold text-indigo-600">۱۸۰,۰۰۰ تومان</p>
-                  </div>
+                  <div><h4 class="font-bold text-xs">پیتزا پپرونی</h4><p class="text-[10px] font-bold text-indigo-600">۱۸۰,۰۰۰ تومان</p></div>
                 </div>
                 <div class="bg-white p-2 rounded-lg shadow-sm flex gap-2 items-center opacity-50">
                   <div class="w-12 h-12 bg-slate-200 rounded-md flex items-center justify-center text-xl">🥤</div>
-                  <div>
-                    <h4 class="font-bold text-xs line-through">نوشیدنی</h4>
-                    <p class="text-[10px] text-slate-400">ناموجود</p>
-                  </div>
+                  <div><h4 class="font-bold text-xs line-through">نوشیدنی</h4><p class="text-[10px] text-slate-400">ناموجود</p></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </header>
 
-  <!-- بخش شمارنده متحرک -->
   <div class="bg-indigo-800 py-10 relative z-20 shadow-xl border-y border-indigo-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x md:divide-indigo-600/50 text-white">
-        
         <div class="flex flex-col items-center justify-center">
-          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1">
-            <span class="counter-value" data-target="500">0</span>+
-          </span>
+          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1"><span class="counter-value" data-target="500">0</span>+</span>
           <span class="text-indigo-200 text-sm font-medium">رستوران فعال</span>
         </div>
-
         <div class="flex flex-col items-center justify-center pt-6 md:pt-0">
-          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1">
-            <span class="counter-value" data-target="10000">0</span>+
-          </span>
+          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1"><span class="counter-value" data-target="10000">0</span>+</span>
           <span class="text-indigo-200 text-sm font-medium">اسکن روزانه منو</span>
         </div>
-
         <div class="flex flex-col items-center justify-center pt-6 md:pt-0">
-          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1">
-            <span class="counter-value" data-target="99">0</span>%
-          </span>
+          <span class="text-4xl md:text-5xl font-black mb-2 flex items-center gap-1"><span class="counter-value" data-target="99">0</span>%</span>
           <span class="text-indigo-200 text-sm font-medium">رضایت رستوران‌داران</span>
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- بخش امکانات -->
   <div class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 relative overflow-hidden">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-lg bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
 
@@ -191,7 +155,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
         <div class="glass-card p-8 rounded-3xl relative z-10" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2" data-aos="fade-up" data-aos-delay="0">
           <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-inner">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
@@ -215,93 +178,164 @@
           <h3 class="text-xl font-bold text-white mb-3">نمایش تصویری محصولات</h3>
           <p class="text-slate-300 leading-relaxed text-sm">نمایش تصویری جذاب از محصولات جهت افزایش نرخ تبدیل مشتریان. عکس‌های باکیفیت به مشتریان در انتخاب بهتر و سریع‌تر کمک شایانی می‌کنند.</p>
         </div>
-        
       </div>
     </div>
   </div>
 
-  <!-- بخش نظرات مشتریان -->
-  <div class="py-24 bg-white relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16" data-aos="fade-up">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">رستوران‌داران درباره ما چه می‌گویند؟</h2>
-        <p class="text-slate-500 max-w-2xl mx-auto">تجربه‌ی کسانی که منوی خود را با MenuQR دیجیتال کرده‌اند.</p>
+  <!-- ⚠️ بخش ۱-ب (پروفایل، نظرات، سوالات متداول و فوتر) را دقیقاً زیر این خط اضافه کنید -->
+  <div class="py-24 bg-slate-50 relative overflow-hidden">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">پنل مدیریت اختصاصی شما</h2>
+      <p class="text-slate-500 max-w-2xl mx-auto">همه‌چیز در یک نگاه. اطلاعات رستوران، ایمیل و دسترسی سریع به تنظیمات.</p>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row" data-aos="fade-up">
+      <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
+        <div class="flex items-center gap-4 mb-8">
+          <img src="https://api.dicebear.com/7.x/initials/svg?seed=Nima&backgroundColor=4f46e5" alt="Profile" class="w-20 h-20 rounded-2xl shadow-md border-2 border-indigo-100">
+          <div>
+            <h3 class="text-2xl font-black text-slate-800">نیما قربانی</h3>
+            <p class="text-sm font-bold text-indigo-600 mt-1">مدیر رستوران سنتی نیما</p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center gap-3 text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <span class="font-medium text-sm" dir="ltr">nimagorbani1391@gmail.com</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            <span class="font-medium text-sm">پنل مدیریت رستوران</span>
+          </div>
+        </div>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="0">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-            <div>
-              <h4 class="font-bold text-slate-800">رضا محمدی</h4>
-              <p class="text-xs text-slate-500">مدیر رستوران سنتی</p>
-            </div>
+      
+      <div class="bg-gradient-to-br from-indigo-600 to-purple-800 p-8 md:w-1/2 flex items-center justify-center relative min-h-[300px]">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="w-full max-w-[260px] bg-white rounded-2xl p-5 shadow-2xl transform rotate-2 relative z-10">
+          <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+            <div class="text-sm font-black text-slate-800">داشبورد</div>
+            <div class="flex items-center gap-2"><span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded-md">فعال</span></div>
           </div>
-          <p class="text-slate-600 text-sm leading-relaxed">«قبلاً هر بار قیمت گوجه گرون می‌شد باید ۵۰۰ هزار تومن پول چاپ منو می‌دادیم. الان با پنل MenuQR توی ۲ دقیقه قیمت‌ها رو عوض می‌کنیم.»</p>
-        </div>
-
-        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="100">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-            <div>
-              <h4 class="font-bold text-slate-800">سارا احمدی</h4>
-              <p class="text-xs text-slate-500">صاحب کافه</p>
-            </div>
+          <div class="space-y-3">
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><div class="h-2 bg-slate-100 rounded-full w-full"></div></div>
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><div class="h-2 bg-slate-100 rounded-full w-4/5"></div></div>
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><div class="h-2 bg-slate-100 rounded-full w-3/4"></div></div>
           </div>
-          <p class="text-slate-600 text-sm leading-relaxed">«منوی کاغذی ما همیشه چرب و کثیف می‌شد. از وقتی QR Code گذاشتیم، ظاهر کافه خیلی تمیزتر شده و فروش کیک‌هامون بالا رفته!»</p>
-        </div>
-
-        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="200">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-            <div>
-              <h4 class="font-bold text-slate-800">علی رضایی</h4>
-              <p class="text-xs text-slate-500">مدیر فست‌فود</p>
-            </div>
+          <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
+             <div class="text-xs font-bold text-slate-400">تعداد غذاها</div>
+             <div class="text-lg font-black text-indigo-600">۱۲</div>
           </div>
-          <p class="text-slate-600 text-sm leading-relaxed">«راه‌اندازی این سیستم واقعاً راحت بود. وقتی یه غذا تموم می‌شه، سریع ناموجودش می‌کنم که مشتری سفارش نده و ناراضی نشه.»</p>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- فوتر -->
-  <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      
-      <div class="flex items-center justify-center gap-2 mb-6">
-        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">M</div>
-        <span class="font-black text-white text-2xl">MenuQR</span>
-      </div>
-      
-      <p class="text-sm mb-8">ساخته شده توسط مجموعه <strong class="text-white">NIMEX</strong></p>
-      
-      <div class="border-t border-slate-800 pt-8 mt-4">
-        <p class="text-xs md:text-sm text-slate-400 tracking-wider font-medium">
-          «منوی کاغذی را کنار بگذارید؛ عصری جدید آغاز شده است.»
-        </p>
-      </div>
-
-      <p class="text-xs text-slate-600 mt-6">© ۲۰۲۶ تمامی حقوق محفوظ است.</p>
+<div class="py-24 bg-white relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">رستوران‌داران درباره ما چه می‌گویند؟</h2>
+      <p class="text-slate-500 max-w-2xl mx-auto">تجربه‌ی کسانی که منوی خود را با MenuQR دیجیتال کرده‌اند.</p>
     </div>
-  </footer>
 
-  <!-- دکمه شناور پشتیبانی روبیکا -->
-  <a href="https://rubika.ir/IM_NIMA_GORBANI" target="_blank" class="fixed bottom-6 left-6 z-50 group flex items-center justify-center">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+          <div><h4 class="font-bold text-slate-800">رضا محمدی</h4><p class="text-xs text-slate-500">مدیر رستوران سنتی</p></div>
+        </div>
+        <p class="text-slate-600 text-sm leading-relaxed">«قبلاً هر بار قیمت گوجه گرون می‌شد باید ۵۰۰ هزار تومن پول چاپ منو می‌دادیم. الان با پنل MenuQR توی ۲ دقیقه قیمت‌ها رو عوض می‌کنیم.»</p>
+      </div>
+
+      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+          <div><h4 class="font-bold text-slate-800">سارا احمدی</h4><p class="text-xs text-slate-500">صاحب کافه</p></div>
+        </div>
+        <p class="text-slate-600 text-sm leading-relaxed">«منوی کاغذی ما همیشه چرب و کثیف می‌شد. از وقتی QR Code گذاشتیم، ظاهر کافه خیلی تمیزتر شده و فروش کیک‌هامون بالا رفته!»</p>
+      </div>
+
+      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+          <div><h4 class="font-bold text-slate-800">علی رضایی</h4><p class="text-xs text-slate-500">مدیر فست‌فود</p></div>
+        </div>
+        <p class="text-slate-600 text-sm leading-relaxed">«راه‌اندازی این سیستم واقعاً راحت بود. وقتی یه غذا تموم می‌شه، سریع ناموجودش می‌کنم که مشتری سفارش نده و ناراضی نشه.»</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-24 bg-slate-900 relative border-t border-slate-800">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <h2 class="text-3xl md:text-4xl font-black text-white mb-4">سوالات متداول</h2>
+      <p class="text-slate-400">هر سوالی داری، اینجا جوابش رو پیدا کن.</p>
+    </div>
+    
+    <div class="space-y-4">
+      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up">
+        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+          <span>آیا برای استفاده از MenuQR نیاز به دانش فنی دارم؟</span>
+          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+        </summary>
+        <div class="p-6 pt-0 text-slate-400 leading-relaxed">خیر! پنل مدیریت ما به گونه‌ای طراحی شده که هر کسی بدون نیاز به دانش برنامه‌نویسی بتواند منوی خود را مدیریت کند. کافیست عکس و قیمت غذاها را وارد کنید.</div>
+      </details>
+      
+      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+          <span>آیا به اینترنت پرسرعت نیاز دارم؟</span>
+          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+        </summary>
+        <div class="p-6 pt-0 text-slate-400 leading-relaxed">سیستم ما بهینه‌سازی شده است و با اینترنت معمولی موبایل نیز به سرعت لود می‌شود. ما از فناوری‌های مدرن برای کاهش حجم استفاده کرده‌ایم.</div>
+      </details>
+
+      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+          <span>چگونه اشتراک VIP را خریداری کنم؟</span>
+          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+        </summary>
+        <div class="p-6 pt-0 text-slate-400 leading-relaxed">پس از ثبت‌نام و ورود به پنل مدیریت، در بخش تنظیمات می‌توانید با کلیک روی دکمه ارتقا، از طریق درگاه‌های بانکی معتبر (مانند زرین‌پال) پرداخت را انجام دهید.</div>
+      </details>
+
+      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+          <span>آیا می‌توانم بعداً منویم را تغییر دهم؟</span>
+          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+        </summary>
+        <div class="p-6 pt-0 text-slate-400 leading-relaxed">بله، هر زمان که بخواهید می‌توانید با ورود به پنل، نام غذا، قیمت یا حتی عکس آن را تغییر دهید. تغییرات بلافاصله روی گوشی مشتریان اعمال می‌شود.</div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <div class="flex items-center justify-center gap-2 mb-6">
+      <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">M</div>
+      <span class="font-black text-white text-2xl">MenuQR</span>
+    </div>
+    <p class="text-sm mb-8">ساخته شده توسط مجموعه <strong class="text-white">NIMEX</strong></p>
+    <div class="border-t border-slate-800 pt-8 mt-4">
+      <p class="text-xs md:text-sm text-slate-500 tracking-wider font-medium">«منوی کاغذی را کنار بگذارید؛ عصری جدید آغاز شده است.»</p>
+    </div>
+    <p class="text-xs text-slate-700 mt-6">© ۲۰۲۶ تمامی حقوق محفوظ است.</p>
+  </div>
+</footer>
+
+<!-- ⚠️ بخش سوم (دکمه شناور و اسکریپت‌ها) را دقیقاً زیر این خط اضافه کنید -->
+    <a href="https://rubika.ir/IM_NIMA_GORBANI" target="_blank" class="fixed bottom-6 left-6 z-50 group flex items-center justify-center">
     <div class="relative">
       <div class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75" style="animation-duration: 2s;"></div>
       <div class="relative bg-gradient-to-tr from-indigo-600 to-purple-600 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-        </svg>
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
       </div>
-      <span class="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-slate-800 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
-        پشتیبانی در روبیکا 💬
-      </span>
+      <span class="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-slate-800 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">پشتیبانی در روبیکا 💬</span>
     </div>
   </a>
 
-  <!-- اسکریپت‌ها -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
   <script>
@@ -309,7 +343,6 @@
 
     const counters = document.querySelectorAll('.counter-value');
     const speed = 200;
-
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -317,20 +350,13 @@
           const updateCount = () => {
             const current = +entry.target.innerText;
             const inc = target / speed;
-            if (current < target) {
-              entry.target.innerText = Math.ceil(current + inc);
-              setTimeout(updateCount, 20);
-            } else {
-              entry.target.innerText = target;
-            }
+            if (current < target) { entry.target.innerText = Math.ceil(current + inc); setTimeout(updateCount, 20); } else { entry.target.innerText = target; }
           };
-          updateCount();
-          obs.unobserve(entry.target);
+          updateCount(); obs.unobserve(entry.target);
         }
       });
     }, { threshold: 0.5 });
-
     counters.forEach(counter => observer.observe(counter));
   </script>
 </body>
-                                                                                         </html>
+</html>
