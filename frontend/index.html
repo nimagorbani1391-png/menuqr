@@ -28,43 +28,21 @@
     }
     @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
-    /* دکمه‌های ساده (بدون افکت شیشه‌ای) */
-    .btn-primary {
-      background-color: #4f46e5;
-      border: 1px solid #4338ca;
-      transition: all 0.3s ease;
-    }
+    /* دکمه‌های ساده */
+    .btn-primary { background-color: #4f46e5; border: 1px solid #4338ca; transition: all 0.3s ease; }
     .btn-primary:hover { background-color: #4338ca; transform: translateY(-2px); }
-    
-    .btn-outline {
-      background-color: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      transition: all 0.3s ease;
-    }
+    .btn-outline { background-color: transparent; border: 1px solid rgba(255,255,255,0.3); transition: all 0.3s ease; }
     .btn-outline:hover { background-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
+    /* استایل موکاپ گوشی */
     .phone-mockup { perspective: 1000px; }
     .phone-body {
-      width: 280px;
-      height: 580px;
-      background: #111;
-      border-radius: 40px;
-      border: 8px solid #333;
+      width: 280px; height: 580px; background: #111; border-radius: 40px; border: 8px solid #333;
       box-shadow: -20px 20px 50px rgba(0,0,0,0.5), inset 0 0 0 2px #444;
-      transform: rotateY(-15deg) rotateX(5deg);
-      transition: transform 0.5s ease;
-      position: relative;
-      overflow: hidden;
+      transform: rotateY(-15deg) rotateX(5deg); transition: transform 0.5s ease; position: relative; overflow: hidden;
     }
     .phone-body:hover { transform: rotateY(0deg) rotateX(0deg); }
-    .phone-screen {
-      background: #f8fafc;
-      width: 100%;
-      height: 100%;
-      border-radius: 32px;
-      overflow: hidden;
-      padding: 15px;
-    }
+    .phone-screen { background: #f8fafc; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; padding: 15px; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative">
@@ -150,128 +128,89 @@
     </div>
   </div>
 
-  <!-- ⚠️ بخش دوم (امکانات و نظرات) را دقیقاً زیر این خط اضافه کنید -->
-  <!-- بخش امکانات (تمیز، بدون افکت شیشه‌ای و کهکشانی) -->
-<div class="py-24 bg-slate-900 relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="text-center mb-20" data-aos="fade-up">
-      <p class="text-3xl md:text-4xl font-black text-white">چرا باید از منو کیو آر استفاده کنید؟</p>
-    </div>
+  <!-- ⚠️ بخش دوم (نظرات، سوالات و فوتر) را دقیقاً زیر این خط اضافه کنید -->
+    <!-- بخش نظرات مشتریان -->
+  <div class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">رستوران‌داران درباره ما چه می‌گویند؟</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto">تجربه‌ی کسانی که منوی خود را با MenuQR دیجیتال کرده‌اند.</p>
+      </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      <!-- کارت 1 (ساده و تمیز) -->
-      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="0">
-        <div class="w-14 h-14 bg-slate-700 text-indigo-400 rounded-2xl flex items-center justify-center mb-6">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+            <div><h4 class="font-bold text-slate-800">رضا محمدی</h4><p class="text-xs text-slate-500">مدیر رستوران سنتی</p></div>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">«قبلاً هر بار قیمت گوجه گرون می‌شد باید ۵۰۰ هزار تومن پول چاپ منو می‌دادیم. الان با پنل MenuQR توی ۲ دقیقه قیمت‌ها رو عوض می‌کنیم.»</p>
         </div>
-        <h3 class="text-xl font-bold text-white mb-3">تولید QR Code اختصاصی</h3>
-        <p class="text-slate-300 leading-relaxed text-sm">سیستم به‌طور خودکار کدهای QR اختصاصی را برای رستوران شما تولید می‌کند تا مشتریان با اسکن کیو ار کد اختصاصی رستوران، به منو دسترسی داشته باشند.</p>
-      </div>
-      
-      <!-- کارت 2 (ساده و تمیز) -->
-      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="100">
-        <div class="w-14 h-14 bg-slate-700 text-purple-400 rounded-2xl flex items-center justify-center mb-6">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+
+        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+            <div><h4 class="font-bold text-slate-800">سارا احمدی</h4><p class="text-xs text-slate-500">صاحب کافه</p></div>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">«منوی کاغذی ما همیشه چرب و کثیف می‌شد. از وقتی QR Code گذاشتیم، ظاهر کافه خیلی تمیزتر شده و فروش کیک‌هامون بالا رفته!»</p>
         </div>
-        <h3 class="text-xl font-bold text-white mb-3">مدیریت آنی و لحظه‌ای</h3>
-        <p class="text-slate-300 leading-relaxed text-sm">مدیریت لحظه‌ای قیمت‌ها و موجودی محصولات. تغییرات اعمال‌شده در پنل مدیریت، بلافاصله بر روی منوی در دسترس مشتریان به‌روزرسانی می‌شوند.</p>
-      </div>
-      
-      <!-- کارت 3 (ساده و تمیز) -->
-      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="200">
-        <div class="w-14 h-14 bg-slate-700 text-cyan-400 rounded-2xl flex items-center justify-center mb-6">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+
+        <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
+            <div><h4 class="font-bold text-slate-800">علی رضایی</h4><p class="text-xs text-slate-500">مدیر فست‌فود</p></div>
+          </div>
+          <p class="text-slate-600 text-sm leading-relaxed">«راه‌اندازی این سیستم واقعاً راحت بود. وقتی یه غذا تموم می‌شه، سریع ناموجودش می‌کنم که مشتری سفارش نده و ناراضی نشه.»</p>
         </div>
-        <h3 class="text-xl font-bold text-white mb-3">نمایش تصویری محصولات</h3>
-        <p class="text-slate-300 leading-relaxed text-sm">نمایش تصویری جذاب از محصولات جهت افزایش نرخ تبدیل مشتریان. عکس‌های باکیفیت به مشتریان در انتخاب بهتر و سریع‌تر کمک شایانی می‌کنند.</p>
       </div>
     </div>
   </div>
-</div>
 
-<!-- بخش نظرات مشتریان -->
-<div class="py-24 bg-white relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">رستوران‌داران درباره ما چه می‌گویند؟</h2>
-      <p class="text-slate-500 max-w-2xl mx-auto">تجربه‌ی کسانی که منوی خود را با MenuQR دیجیتال کرده‌اند.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up">
-        <div class="flex items-center gap-4 mb-4">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-          <div><h4 class="font-bold text-slate-800">رضا محمدی</h4><p class="text-xs text-slate-500">مدیر رستوران سنتی</p></div>
-        </div>
-        <p class="text-slate-600 text-sm leading-relaxed">«قبلاً هر بار قیمت گوجه گرون می‌شد باید ۵۰۰ هزار تومن پول چاپ منو می‌دادیم. الان با پنل MenuQR توی ۲ دقیقه قیمت‌ها رو عوض می‌کنیم.»</p>
+  <!-- بخش سوالات متداول (FAQ) -->
+  <div class="py-24 bg-slate-900 relative border-t border-slate-800">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-black text-white mb-4">سوالات متداول</h2>
+        <p class="text-slate-400">هر سوالی داری، اینجا جوابش رو پیدا کن.</p>
       </div>
-
-      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="100">
-        <div class="flex items-center gap-4 mb-4">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-          <div><h4 class="font-bold text-slate-800">سارا احمدی</h4><p class="text-xs text-slate-500">صاحب کافه</p></div>
-        </div>
-        <p class="text-slate-600 text-sm leading-relaxed">«منوی کاغذی ما همیشه چرب و کثیف می‌شد. از وقتی QR Code گذاشتیم، ظاهر کافه خیلی تمیزتر شده و فروش کیک‌هامون بالا رفته!»</p>
-      </div>
-
-      <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-sm" data-aos="fade-up" data-aos-delay="200">
-        <div class="flex items-center gap-4 mb-4">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" alt="User" class="w-12 h-12 rounded-full bg-indigo-100">
-          <div><h4 class="font-bold text-slate-800">علی رضایی</h4><p class="text-xs text-slate-500">مدیر فست‌فود</p></div>
-        </div>
-        <p class="text-slate-600 text-sm leading-relaxed">«راه‌اندازی این سیستم واقعاً راحت بود. وقتی یه غذا تموم می‌شه، سریع ناموجودش می‌کنم که مشتری سفارش نده و ناراضی نشه.»</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- بخش سوالات متداول (FAQ) -->
-<div class="py-24 bg-slate-900 relative border-t border-slate-800">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <h2 class="text-3xl md:text-4xl font-black text-white mb-4">سوالات متداول</h2>
-      <p class="text-slate-400">هر سوالی داری، اینجا جوابش رو پیدا کن.</p>
-    </div>
-    
-    <div class="space-y-4">
-      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up">
-        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
-          <span>آیا برای استفاده از MenuQR نیاز به دانش فنی دارم؟</span>
-          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
-        </summary>
-        <div class="p-6 pt-0 text-slate-400 leading-relaxed">خیر! پنل مدیریت ما به گونه‌ای طراحی شده که هر کسی بدون نیاز به دانش برنامه‌نویسی بتواند منوی خود را مدیریت کند. کافیست عکس و قیمت غذاها را وارد کنید.</div>
-      </details>
       
-      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
-        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
-          <span>آیا به اینترنت پرسرعت نیاز دارم؟</span>
-          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
-        </summary>
-        <div class="p-6 pt-0 text-slate-400 leading-relaxed">سیستم ما بهینه‌سازی شده است و با اینترنت معمولی موبایل نیز به سرعت لود می‌شود. ما از فناوری‌های مدرن برای کاهش حجم استفاده کرده‌ایم.</div>
-      </details>
+      <div class="space-y-4">
+        <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up">
+          <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+            <span>آیا برای استفاده از MenuQR نیاز به دانش فنی دارم؟</span>
+            <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+          </summary>
+          <div class="p-6 pt-0 text-slate-400 leading-relaxed">خیر! پنل مدیریت ما به گونه‌ای طراحی شده که هر کسی بدون نیاز به دانش برنامه‌نویسی بتواند منوی خود را مدیریت کند. کافیست عکس و قیمت غذاها را وارد کنید.</div>
+        </details>
+        
+        <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+          <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+            <span>آیا به اینترنت پرسرعت نیاز دارم؟</span>
+            <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+          </summary>
+          <div class="p-6 pt-0 text-slate-400 leading-relaxed">سیستم ما بهینه‌سازی شده است و با اینترنت معمولی موبایل نیز به سرعت لود می‌شود. ما از فناوری‌های مدرن برای کاهش حجم استفاده کرده‌ایم.</div>
+        </details>
 
-      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
-          <span>چگونه اشتراک VIP را خریداری کنم؟</span>
-          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
-        </summary>
-        <div class="p-6 pt-0 text-slate-400 leading-relaxed">پس از ثبت‌نام و ورود به پنل مدیریت، در بخش تنظیمات می‌توانید با کلیک روی دکمه ارتقا، از طریق درگاه‌های بانکی معتبر (مانند زرین‌پال) پرداخت را انجام دهید.</div>
-      </details>
+        <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+          <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+            <span>چگونه اشتراک VIP را خریداری کنم؟</span>
+            <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+          </summary>
+          <div class="p-6 pt-0 text-slate-400 leading-relaxed">پس از ثبت‌نام و ورود به پنل مدیریت، در بخش تنظیمات می‌توانید با کلیک روی دکمه ارتقا، از طریق درگاه‌های بانکی معتبر (مانند زرین‌پال) پرداخت را انجام دهید.</div>
+        </details>
 
-      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
-        <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
-          <span>آیا می‌توانم بعداً منویم را تغییر دهم؟</span>
-          <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
-        </summary>
-        <div class="p-6 pt-0 text-slate-400 leading-relaxed">بله، هر زمان که بخواهید می‌توانید با ورود به پنل، نام غذا، قیمت یا حتی عکس آن را تغییر دهید. تغییرات بلافاصله روی گوشی مشتریان اعمال می‌شود.</div>
-      </details>
+        <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+          <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
+            <span>آیا می‌توانم بعداً منویم را تغییر دهم؟</span>
+            <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
+          </summary>
+          <div class="p-6 pt-0 text-slate-400 leading-relaxed">بله، هر زمان که بخواهید می‌توانید با ورود به پنل، نام غذا، قیمت یا حتی عکس آن را تغییر دهید. تغییرات بلافاصله روی گوشی مشتریان اعمال می‌شود.</div>
+        </details>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ⚠️ بخش سوم (فوتر و اسکریپت‌ها) را دقیقاً زیر این خط اضافه کنید -->
-    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+  <!-- فوتر -->
+  <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <div class="flex items-center justify-center gap-2 mb-6">
         <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">M</div>
@@ -363,4 +302,4 @@
     });
   </script>
 </body>
-</html>
+            </html>
