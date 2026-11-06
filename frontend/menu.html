@@ -20,19 +20,16 @@
     .dark-mode .bg-slate-50 { background-color: #0f172a !important; }
     .dark-mode .bg-indigo-50 { background-color: #1e293b !important; }
     
-    /* انیمیشن برای مودال‌ها */
-    .modal-enter { animation: modalIn 0.3s ease-out forwards; }
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
+    /* انیمیشن */
+    .slide-up-enter { animation: slideUp 0.3s ease-out forwards; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20">
 
-  <!-- مودال خوش‌آمدگویی (گرفتن اسم و شماره میز) -->
+  <!-- مودال خوش‌آمدگویی -->
   <div id="welcome-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl modal-enter text-center">
+    <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl text-center">
       <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">👋</div>
       <h2 class="text-2xl font-black text-slate-800 mb-2">خوش آمدید!</h2>
       <p class="text-sm text-slate-500 mb-6">لطفاً برای مشاهده منو و سفارش، مشخصات خود را وارد کنید.</p>
@@ -58,14 +55,11 @@
         <h1 class="text-2xl font-extrabold" id="restaurant-name">در حال بارگذاری...</h1>
         <p class="text-indigo-200 mt-1 text-sm" id="welcome-message">به منوی ما خوش آمدید 🌿</p>
       </div>
-      <button id="theme-toggle" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
-        🌙
-      </button>
+      <button id="theme-toggle" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-sm">🌙</button>
     </div>
   </header>
 
   <div class="max-w-2xl mx-auto px-4 mt-6">
-    
     <!-- نوار جستجو -->
     <div class="relative mb-6">
       <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
@@ -75,9 +69,7 @@
     </div>
 
     <!-- تب‌های دسته‌بندی -->
-    <div id="category-tabs" class="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-2">
-      <!-- دکمه‌ها توسط جاوااسکریپت ساخته می‌شوند -->
-    </div>
+    <div id="category-tabs" class="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-2"></div>
 
     <!-- لیست غذاها -->
     <div id="menu-list" class="space-y-4">
@@ -85,34 +77,74 @@
     </div>
   </div>
 
-  <!-- مودال جزئیات غذا -->
-  <div id="item-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl modal-enter overflow-hidden max-h-[90vh] flex flex-col">
-      <!-- دکمه بستن -->
-      <button onclick="closeItemModal()" class="absolute top-4 right-4 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center backdrop-blur-md z-10 transition-colors">✕</button>
+  <!-- صفحه جزئیات غذا (تمام‌صفحه) -->
+  <div id="item-page" class="fixed inset-0 bg-white z-[100] hidden flex-col overflow-y-auto slide-up-enter">
+    
+    <!-- دکمه بازگشت و عکس -->
+    <div class="relative w-full h-[45vh] bg-slate-200 shrink-0">
+      <div id="item-image-container" class="w-full h-full"></div>
       
-      <div id="modal-image-container" class="w-full h-64 bg-slate-100 relative">
-        <!-- عکس اینجا قرار می‌گیرد -->
+      <!-- دکمه برگشت -->
+      <button onclick="closeItemPage()" class="absolute top-6 right-6 w-12 h-12 bg-white/90 backdrop-blur-md text-slate-800 rounded-full flex items-center justify-center shadow-lg z-10 transition-transform active:scale-90">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+
+      <!-- دکمه قلب (علاقه‌مندی) -->
+      <button onclick="toggleFavorite()" id="fav-btn" class="absolute top-6 left-6 w-12 h-12 bg-white/90 backdrop-blur-md text-slate-400 rounded-full flex items-center justify-center shadow-lg z-10 transition-all active:scale-90">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+      </button>
+
+      <!-- امتیازدهی با ستاره (روی عکس) -->
+      <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg flex gap-1 z-10" id="rating-stars">
+        <span onclick="rateItem(1)" class="text-2xl cursor-pointer text-slate-300 transition-colors">★</span>
+        <span onclick="rateItem(2)" class="text-2xl cursor-pointer text-slate-300 transition-colors">★</span>
+        <span onclick="rateItem(3)" class="text-2xl cursor-pointer text-slate-300 transition-colors">★</span>
+        <span onclick="rateItem(4)" class="text-2xl cursor-pointer text-slate-300 transition-colors">★</span>
+        <span onclick="rateItem(5)" class="text-2xl cursor-pointer text-slate-300 transition-colors">★</span>
+      </div>
+    </div>
+
+    <!-- محتوای جزئیات -->
+    <div class="flex-1 bg-white rounded-t-3xl -mt-6 relative z-10 p-6 pb-32">
+      <div class="flex justify-between items-start mb-2">
+        <h2 id="item-title" class="text-3xl font-black text-slate-800">نام غذا</h2>
       </div>
       
-      <div class="p-6 overflow-y-auto">
-        <div class="flex justify-between items-start mb-2">
-          <h2 id="modal-title" class="text-2xl font-black text-slate-800">نام غذا</h2>
-          <span id="modal-price" class="text-xl font-extrabold text-indigo-600 whitespace-nowrap mr-4">۰ تومان</span>
-        </div>
-        
-        <div id="modal-tags" class="flex flex-wrap gap-2 mb-4">
-          <!-- تگ‌ها اینجا قرار می‌گیرند -->
-        </div>
-        
-        <p id="modal-description" class="text-slate-600 text-sm leading-relaxed mb-6">توضیحات غذا...</p>
-        
-        <div id="modal-ingredients-container" class="bg-slate-50 p-4 rounded-2xl border border-slate-100 hidden">
-          <h3 class="text-sm font-bold text-slate-800 mb-2">مواد اولیه:</h3>
-          <p id="modal-ingredients" class="text-xs text-slate-500 leading-relaxed">...</p>
+      <div id="item-tags" class="flex flex-wrap gap-2 mb-4"></div>
+      
+      <p id="item-description" class="text-slate-600 text-sm leading-relaxed mb-8">توضیحات غذا...</p>
+      
+      <!-- بخش مواد اولیه -->
+      <div id="item-ingredients-container" class="bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-8 hidden">
+        <h3 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+          <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+          مواد اولیه
+        </h3>
+        <p id="item-ingredients" class="text-sm text-slate-500 leading-relaxed">...</p>
+      </div>
+
+      <!-- انتخاب تعداد -->
+      <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 mt-6">
+        <span class="font-bold text-slate-700">تعداد سفارش:</span>
+        <div class="flex items-center gap-4 bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
+          <button onclick="changeQty(-1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg text-xl font-bold transition-colors">-</button>
+          <span id="qty-display" class="w-8 text-center font-black text-lg text-indigo-600">1</span>
+          <button onclick="changeQty(1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg text-xl font-bold transition-colors">+</button>
         </div>
       </div>
     </div>
+
+    <!-- نوار پایینی ثابت (خرید) -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 pb-6 z-20 flex items-center justify-between shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+      <div class="flex flex-col">
+        <span class="text-[10px] text-slate-500 font-bold">مبلغ نهایی</span>
+        <div class="text-2xl font-black text-indigo-600" id="item-price">۰ تومان</div>
+      </div>
+      <button onclick="addToCart()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-indigo-500/30 active:scale-95 transition-transform">
+        افزودن به سبد
+      </button>
+    </div>
+
   </div>
 
   <!-- دکمه شناور فراخوان گارسون -->
@@ -124,7 +156,7 @@
     <span class="font-bold text-sm">فراخوان گارسون 🛎</span>
   </button>
 
-  <script>
+   <script>
     const API_BASE = 'https://menuqr-8v3o.onrender.com/api';
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
@@ -133,8 +165,11 @@
     let allItems = [];
     let activeCategory = 'all';
     let searchQuery = '';
+    
+    let currentItem = null;
+    let currentQuantity = 1;
+    let currentRating = 0;
 
-    // بررسی اطلاعات مشتری در بدو ورود
     window.onload = () => {
       const savedName = localStorage.getItem('customerName');
       if (!savedName) {
@@ -145,40 +180,23 @@
       fetchMenu();
     };
 
-    // ذخیره اطلاعات مشتری
     function saveCustomerInfo() {
       const name = document.getElementById('customer-name').value.trim();
       const table = document.getElementById('customer-table').value.trim();
-      
-      if (!name) {
-        alert('لطفا نام خود را وارد کنید.');
-        return;
-      }
-      
+      if (!name) return alert('لطفا نام خود را وارد کنید.');
       localStorage.setItem('customerName', name);
       if (table) localStorage.setItem('customerTable', table);
-      
       document.getElementById('welcome-modal').classList.add('hidden');
       updateWelcomeMessage(name, table);
     }
 
-    // آپدیت پیام خوش‌آمدگویی در هدر
     function updateWelcomeMessage(name, table) {
       const el = document.getElementById('welcome-message');
-      if (table) {
-        el.innerHTML = `خوش آمدید <strong>${name}</strong> | میز شماره <strong>${table}</strong>`;
-      } else {
-        el.innerHTML = `خوش آمدید <strong>${name}</strong>`;
-      }
+      el.innerHTML = table ? `خوش آمدید <strong>${name}</strong> | میز <strong>${table}</strong>` : `خوش آمدید <strong>${name}</strong>`;
     }
 
-    // گرفتن اطلاعات منو
     async function fetchMenu() {
-      if (!slug) {
-        document.getElementById('restaurant-name').innerText = 'خطا در لینک';
-        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">لطفا با لینک اختصاصی رستوران وارد شوید.</p>';
-        return;
-      }
+      if (!slug) return;
       try {
         const res = await fetch(`${API_BASE}/public/menu/${slug}`); 
         if (!res.ok) throw new Error('منو پیدا نشد');
@@ -195,11 +213,10 @@
         renderCategoryTabs();
         filterAndRenderItems();
       } catch (error) {
-        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">خطا: منویی با این آدرس پیدا نشد.</p>';
+        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">خطا در دریافت منو.</p>';
       }
     }
 
-    // ساخت تب‌های دسته‌بندی
     function renderCategoryTabs() {
       const container = document.getElementById('category-tabs');
       let html = `<button onclick="setCategory('all')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === 'all' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">همه</button>`;
@@ -215,24 +232,20 @@
       filterAndRenderItems();
     }
 
-    // تابع ساخت تگ‌ها
     function renderTags(tags) {
       if (!tags || tags.length === 0) return '';
-      // دیکشنری رنگ تگ‌ها
       const tagStyles = {
         'spicy': { label: 'تند 🌶', color: 'bg-red-100 text-red-600' },
         'vegetarian': { label: 'گیاهی 🌿', color: 'bg-green-100 text-green-600' },
         'popular': { label: 'محبوب ⭐', color: 'bg-orange-100 text-orange-600' },
         'gluten-free': { label: 'بدون گلوتن 🌾', color: 'bg-yellow-100 text-yellow-700' }
       };
-      
       return tags.map(tag => {
         const style = tagStyles[tag] || { label: tag, color: 'bg-slate-100 text-slate-600' };
-        return `<span class="px-2 py-1 rounded-md text-[10px] font-bold ${style.color}">${style.label}</span>`;
+        return `<span class="px-2.5 py-1 rounded-md text-[11px] font-bold ${style.color}">${style.label}</span>`;
       }).join('');
     }
 
-    // فیلتر و نمایش غذاها
     function filterAndRenderItems() {
       const listContainer = document.getElementById('menu-list');
       const filteredItems = allItems.filter(item => {
@@ -247,12 +260,10 @@
       }
 
       listContainer.innerHTML = filteredItems.map(item => `
-        <div onclick="openItemModal('${item._id}')" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow cursor-pointer active:scale-95 transform duration-100">
+        <div onclick="openItemPage('${item._id}')" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow cursor-pointer active:scale-[0.98]">
           ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
           <div class="flex-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
-            </div>
+            <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
             <div class="flex gap-1 mt-1 mb-2 flex-wrap">${renderTags(item.tags)}</div>
             <p class="text-xs text-slate-500 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
             <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
@@ -261,56 +272,119 @@
       `).join('');
     }
 
-    // باز کردن مودال غذا
-    function openItemModal(itemId) {
-      const item = allItems.find(i => i._id === itemId);
-      if (!item) return;
+    function openItemPage(itemId) {
+      currentItem = allItems.find(i => i._id === itemId);
+      if (!currentItem) return;
+      
+      currentQuantity = 1;
+      document.getElementById('qty-display').innerText = currentQuantity;
+      updatePriceDisplay();
 
-      const imgContainer = document.getElementById('modal-image-container');
-      if (item.image) {
-        imgContainer.innerHTML = `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-full h-full object-cover">`;
+      const imgContainer = document.getElementById('item-image-container');
+      if (currentItem.image) {
+        imgContainer.innerHTML = `<img src="${API_BASE.replace('/api','')}${currentItem.image}" class="w-full h-full object-cover">`;
       } else {
         imgContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center text-slate-400">بدون عکس</div>`;
       }
 
-      document.getElementById('modal-title').innerText = item.name;
-      document.getElementById('modal-price').innerText = `${item.price.toLocaleString()} تومان`;
-      document.getElementById('modal-description').innerText = item.description || 'توضیحاتی برای این غذا ثبت نشده است.';
-      
-      document.getElementById('modal-tags').innerHTML = renderTags(item.tags);
+      document.getElementById('item-title').innerText = currentItem.name;
+      document.getElementById('item-description').innerText = currentItem.description || 'توضیحاتی برای این غذا ثبت نشده است.';
+      document.getElementById('item-tags').innerHTML = renderTags(currentItem.tags);
 
-      const ingredientsCont = document.getElementById('modal-ingredients-container');
-      if (item.ingredients) {
+      const ingredientsCont = document.getElementById('item-ingredients-container');
+      if (currentItem.ingredients) {
         ingredientsCont.classList.remove('hidden');
-        document.getElementById('modal-ingredients').innerText = item.ingredients;
+        document.getElementById('item-ingredients').innerText = currentItem.ingredients;
       } else {
         ingredientsCont.classList.add('hidden');
       }
 
-      document.getElementById('item-modal').classList.remove('hidden');
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const favBtn = document.getElementById('fav-btn');
+      if (favorites.includes(currentItem._id)) {
+        favBtn.classList.add('text-red-500');
+        favBtn.classList.remove('text-slate-400');
+      } else {
+        favBtn.classList.remove('text-red-500');
+        favBtn.classList.add('text-slate-400');
+      }
+
+      currentRating = parseInt(localStorage.getItem(`rating_${currentItem._id}`) || '0');
+      updateStars(currentRating);
+
+      const page = document.getElementById('item-page');
+      page.classList.remove('hidden');
+      page.classList.add('flex');
+      document.body.style.overflow = 'hidden';
     }
 
-    // بستن مودال غذا
-    function closeItemModal() {
-      document.getElementById('item-modal').classList.add('hidden');
+    function closeItemPage() {
+      const page = document.getElementById('item-page');
+      page.classList.add('hidden');
+      page.classList.remove('flex');
+      document.body.style.overflow = 'auto';
     }
 
-    // بستن مودال با کلیک بیرون از آن
-    document.getElementById('item-modal').addEventListener('click', function(e) {
-      if (e.target === this) closeItemModal();
-    });
+    function changeQty(amount) {
+      currentQuantity += amount;
+      if (currentQuantity < 1) currentQuantity = 1;
+      document.getElementById('qty-display').innerText = currentQuantity;
+      updatePriceDisplay();
+    }
 
-    // فراخوان گارسون
+    function updatePriceDisplay() {
+      const total = currentItem.price * currentQuantity;
+      document.getElementById('item-price').innerText = `${total.toLocaleString()} تومان`;
+    }
+
+    function addToCart() {
+      const total = currentItem.price * currentQuantity;
+      alert(`✅ ${currentQuantity} عدد ${currentItem.name} به مبلغ ${total.toLocaleString()} تومان به سبد خرید اضافه شد.`);
+      closeItemPage();
+    }
+
+    function toggleFavorite() {
+      let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const favBtn = document.getElementById('fav-btn');
+      
+      if (favorites.includes(currentItem._id)) {
+        favorites = favorites.filter(id => id !== currentItem._id);
+        favBtn.classList.remove('text-red-500');
+        favBtn.classList.add('text-slate-400');
+      } else {
+        favorites.push(currentItem._id);
+        favBtn.classList.add('text-red-500');
+        favBtn.classList.remove('text-slate-400');
+      }
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    function rateItem(stars) {
+      currentRating = stars;
+      localStorage.setItem(`rating_${currentItem._id}`, stars);
+      updateStars(stars);
+    }
+
+    function updateStars(rating) {
+      const stars = document.querySelectorAll('#rating-stars span');
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('text-yellow-400');
+          star.classList.remove('text-slate-300');
+        } else {
+          star.classList.remove('text-yellow-400');
+          star.classList.add('text-slate-300');
+        }
+      });
+    }
+
     function callWaiter() {
       const name = localStorage.getItem('customerName') || 'مشتری';
       const table = localStorage.getItem('customerTable') || 'نامشخص';
-      
-      // برای اینکه واقعی به نظر برسه، یه لودینگ کوتاه نشون میدیم
       const btn = event.currentTarget;
       const originalHtml = btn.innerHTML;
       btn.innerHTML = '<span class="font-bold text-sm">در حال ارسال...</span>';
       btn.disabled = true;
-
       setTimeout(() => {
         alert(`✅ درخواست شما ارسال شد!\nگارسون به میز شما (${table}) خواهد آمد.\n(${name} عزیز، ممنون از صبوری شما)`);
         btn.innerHTML = originalHtml;
@@ -318,13 +392,11 @@
       }, 800);
     }
 
-    // جستجو
     document.getElementById('search-input').addEventListener('input', (e) => {
       searchQuery = e.target.value.trim();
       filterAndRenderItems();
     });
 
-    // حالت شب
     document.getElementById('theme-toggle').addEventListener('click', function() {
       document.body.classList.toggle('dark-mode');
       this.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
