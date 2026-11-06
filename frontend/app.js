@@ -321,3 +321,20 @@ async function deleteItem(id) {
     fetchItems();
   } catch (e) { alert('خطا در حذف'); }
 }
+async function copyMenuLink() {
+    if (!currentSlug) {
+        alert('لطفا چند لحظه صبر کنید تا اطلاعات رستوران لود شود.');
+        return;
+    }
+    // ساخت لینک کامل و اختصاصی
+    const menuUrl = `${window.location.origin}/menu.html?slug=${currentSlug}`;
+    
+    try {
+        // کپی کردن توی کلیپ‌بورد گوشی
+        await navigator.clipboard.writeText(menuUrl);
+        alert('✅ لینک منو با موفقیت کپی شد!\nحالا می‌تونید توی یه تب جدید پیستش کنید و ببینید.');
+    } catch (err) {
+        // اگه مرورگر اجازه کپی نداد، بهش نشونش میدیم
+        prompt('مرورگر شما اجازه کپی خودکار نداد. لطفا این لینک را دستی کپی کنید:', menuUrl);
+    }
+}
