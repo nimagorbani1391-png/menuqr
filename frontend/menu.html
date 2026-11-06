@@ -314,7 +314,7 @@
 
       listContainer.innerHTML = filteredItems.map(item => `
         <div onclick="openItemPage('${item._id}')" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow cursor-pointer active:scale-[0.98]">
-          ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
+          ${item.image ? `<img src="${item.image.startsWith('http') ? item.image : API_BASE.replace('/api','') + item.image}" loading="lazy" class="w-24 h-24 rounded-xl object-cover shadow-sm">` : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
           <div class="flex-1">
             <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
             <div class="flex gap-1 mt-1 mb-2 flex-wrap">${renderTags(item.tags)}</div>
@@ -335,7 +335,7 @@
 
       const imgContainer = document.getElementById('item-image-container');
       if (currentItem.image) {
-        imgContainer.innerHTML = `<img src="${API_BASE.replace('/api','')}${currentItem.image}" class="w-full h-full object-cover">`;
+        imgContainer.innerHTML = `<img src="${currentItem.image.startsWith('http') ? currentItem.image : API_BASE.replace('/api','') + currentItem.image}" loading="lazy" class="w-full h-full object-cover">`;
       } else {
         imgContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center text-slate-400">بدون عکس</div>`;
       }
