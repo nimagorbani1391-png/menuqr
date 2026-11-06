@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MenuQR | پنل مدیریت</title>
+  <title>پنل مدیریت | MenuQR</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+  
   <style>
     body { font-family: 'Vazirmatn', sans-serif; background-color: #f8fafc; }
     .hidden { display: none !important; }
+    .active-tab { background-color: #4f46e5; color: white !important; }
+    .nav-tab { transition: all 0.2s; }
+    .nav-tab:hover { background-color: #f1f5f9; color: #4f46e5; }
   </style>
 </head>
-<body class="min-h-screen text-slate-800 antialiased">
+<body class="min-h-screen text-slate-800">
 
+  <!-- صفحه لاگین و ثبت‌نام -->
   <div id="auth-section" class="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-indigo-50 to-slate-100">
     <div class="bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-indigo-100/50 border border-white/50 w-full max-w-md">
       
@@ -28,11 +33,11 @@
       <div id="login-form" class="space-y-5">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-2">ایمیل</label>
-          <input type="email" id="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="example@gmail.com" autocomplete="off">
+          <input type="email" id="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="example@gmail.com">
         </div>
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-2">رمز عبور</label>
-          <input type="password" id="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="••••••••" autocomplete="off">
+          <input type="password" id="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm text-left" dir="ltr" placeholder="••••••••">
         </div>
         <button type="button" id="btn-login" onclick="doLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">ورود به پنل</button>
       </div>
@@ -65,82 +70,161 @@
     </div>
   </div>
 
-  <div id="dashboard-section" class="hidden max-w-5xl mx-auto p-4 md:p-8">
-    <div class="flex justify-between items-center mb-8 bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl">M</div>
-        <div>
-          <h1 class="text-xl font-extrabold text-slate-800">مدیریت منو</h1>
-          <p class="text-xs text-slate-500 font-medium">MenuQR by NIMEX</p>
+  <!-- داشبورد اصلی -->
+  <div id="dashboard-section" class="hidden min-h-screen flex flex-col">
+    
+    <!-- هدر بالای پنل -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">M</div>
+            <div>
+              <h1 class="text-lg font-black text-slate-800" id="dash-restaurant-name">در حال بارگذاری...</h1>
+              <p class="text-xs text-slate-500">پنل مدیریت MenuQR</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm font-bold text-slate-600 hidden sm:block" id="dash-user-name">کاربر</span>
+            <button onclick="logout()" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors">خروج</button>
+          </div>
+        </div>
+        
+        <!-- تب‌های ناوبری -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-3 mt-2">
+          <button onclick="showView('view-dashboard')" id="tab-dashboard" class="nav-tab active-tab px-4 py-2 rounded-xl text-sm font-bold text-slate-600 whitespace-nowrap">داشبورد</button>
+          <button onclick="showView('view-foods')" id="tab-foods" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold text-slate-600 whitespace-nowrap">غذاها</button>
+          <button onclick="showView('view-categories')" id="tab-categories" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold text-slate-600 whitespace-nowrap">دسته‌بندی‌ها</button>
+          <button onclick="showView('view-qr')" id="tab-qr" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold text-slate-600 whitespace-nowrap">QR Code</button>
         </div>
       </div>
-      <button onclick="logout()" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors">خروج از حساب</button>
-    </div>
+    </header>
 
-    <div class="bg-gradient-to-l from-indigo-600 to-indigo-800 p-6 md:p-8 rounded-3xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between text-white gap-6">
-      <div class="flex-1">
-        <h2 class="text-xl font-extrabold mb-2">QR Code اختصاصی رستوران شما</h2>
-        <p class="text-indigo-100 text-sm leading-relaxed mb-4">این کد را پرینت بگیرید و روی میزها قرار دهید. مشتریان با اسکن آن، منوی شما را می‌بینند.</p>
-        <button onclick="downloadQR()" class="bg-white text-indigo-700 font-bold py-2.5 px-6 rounded-xl shadow-md hover:bg-slate-50 transition-colors active:scale-[0.98]">دانلود QR Code</button>
+    <!-- محتوای اصلی -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- نمای داشبورد -->
+      <div id="view-dashboard" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- کارت آمار غذاها -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-2xl">🍔</div>
+            <div>
+              <p class="text-sm text-slate-500 font-bold mb-1">کل غذاها</p>
+              <p class="text-3xl font-black text-slate-800" id="stat-foods">۰</p>
+            </div>
+          </div>
+          <!-- کارت آمار دسته‌بندی -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-14 h-14 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-2xl">📑</div>
+            <div>
+              <p class="text-sm text-slate-500 font-bold mb-1">دسته‌بندی‌ها</p>
+              <p class="text-3xl font-black text-slate-800" id="stat-cats">۰</p>
+            </div>
+          </div>
+          <!-- کارت وضعیت -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center text-2xl">⚡</div>
+            <div>
+              <p class="text-sm text-slate-500 font-bold mb-1">وضعیت سیستم</p>
+              <p class="text-lg font-black text-green-600">فعال و آنلاین</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-600 p-8 rounded-3xl shadow-lg flex flex-col md:flex-row items-center justify-between text-white gap-6">
+          <div>
+            <h2 class="text-2xl font-black mb-2">منوی شما آماده است!</h2>
+            <p class="text-indigo-100 text-sm mb-4">برای مشاهده منوی مشتری و تست سیستم، روی دکمه روبه‌رو کلیک کنید.</p>
+            <button onclick="openPublicMenu()" class="bg-white text-indigo-700 font-bold py-2.5 px-6 rounded-xl shadow-md hover:bg-slate-50 transition-colors active:scale-95">مشاهده منوی مشتری</button>
+          </div>
+          <div class="text-6xl opacity-50 hidden md:block">🚀</div>
+        </div>
       </div>
-      <div class="bg-white p-4 rounded-2xl shadow-inner" id="qrcode-container"></div>
-    </div>
 
-    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 mb-8">
-      <h2 class="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
-        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-        ساخت دسته‌بندی جدید
-      </h2>
-      <div class="flex gap-3">
-        <input type="text" id="cat-name" placeholder="مثلا: پیش‌غذا، نوشیدنی..." required class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
-        <button type="button" onclick="addCategory()" id="btn-add-cat" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98]">افزودن</button>
+      <!-- نمای غذاها -->
+      <div id="view-foods" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-black text-slate-800">مدیریت غذاها</h2>
+          <button onclick="openAddFoodModal()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all active:scale-95 text-sm">+ افزودن غذای جدید</button>
+        </div>
+        
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div id="items-list" class="divide-y divide-slate-100">
+            <p class="p-6 text-center text-slate-500">در حال بارگذاری...</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 mb-8">
-      <h2 class="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
-        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-        افزودن غذای جدید
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">نام غذا</label>
-          <input type="text" id="item-name" placeholder="مثلا: کباب کوبیده" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
+      <!-- نمای دسته‌بندی‌ها -->
+      <div id="view-categories" class="hidden space-y-6">
+        <h2 class="text-2xl font-black text-slate-800">مدیریت دسته‌بندی‌ها</h2>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex gap-3 mb-6">
+            <input type="text" id="cat-name" placeholder="نام دسته‌بندی جدید (مثلا: پیش‌غذا)" class="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+            <button type="button" onclick="addCategory()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-all active:scale-95">افزودن</button>
+          </div>
+          <div id="cats-list" class="space-y-2">
+            <p class="text-center text-slate-500 text-sm">در حال بارگذاری...</p>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">قیمت (تومان)</label>
-          <input type="number" id="item-price" placeholder="مثلا: 250000" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">دسته‌بندی</label>
-          <select id="item-cat" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm">
-            <option value="">لطفا یک دسته‌بندی انتخاب کنید...</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">عکس غذا</label>
-          <input type="file" id="item-image" accept="image/*" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-all">
-        </div>
-        <div class="md:col-span-2">
-          <label class="block text-xs font-semibold text-slate-600 mb-1">توضیحات (اختیاری)</label>
-          <textarea id="item-desc" rows="2" placeholder="مواد اولیه، نکات..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-sm resize-none"></textarea>
-        </div>
-        <button type="button" onclick="addItem()" id="btn-add-item" class="md:col-span-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-[0.98] mt-2">افزودن به منو</button>
       </div>
-    </div>
 
-    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-      <h2 class="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
-        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-        لیست غذاهای فعلی
-      </h2>
-      <div id="items-list" class="space-y-3">
-        <p class="text-slate-400 text-center font-medium py-4">در حال بارگذاری...</p>
+      <!-- نمای QR Code -->
+      <div id="view-qr" class="hidden flex flex-col items-center justify-center py-10">
+        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl text-center max-w-sm w-full">
+          <h2 class="text-2xl font-black text-slate-800 mb-2">QR Code اختصاصی</h2>
+          <p class="text-sm text-slate-500 mb-6">این کد را پرینت بگیرید و روی میزها قرار دهید.</p>
+          <div class="bg-slate-50 p-6 rounded-2xl inline-block border border-slate-100 mb-6" id="qrcode-container"></div>
+          <button onclick="downloadQR()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all active:scale-95">دانلود تصویر QR</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- مودال افزودن غذا -->
+  <div id="add-food-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-3xl sticky top-0 z-10">
+        <h2 class="text-xl font-black text-slate-800">افزودن غذای جدید</h2>
+        <button onclick="closeAddFoodModal()" class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center">✕</button>
+      </div>
+      
+      <div class="p-6 space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">نام غذا</label>
+            <input type="text" id="item-name" placeholder="مثلا: کباب کوبیده" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">قیمت (تومان)</label>
+            <input type="number" id="item-price" placeholder="مثلا: 250000" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">دسته‌بندی</label>
+            <select id="item-cat" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+              <option value="">انتخاب کنید...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">عکس غذا</label>
+            <input type="file" id="item-image" accept="image/*" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-bold text-slate-600 mb-1">توضیحات</label>
+            <textarea id="item-desc" rows="2" placeholder="مواد اولیه، نکات..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-6 border-t border-slate-100 bg-slate-50 rounded-b-3xl flex justify-end gap-3">
+        <button onclick="closeAddFoodModal()" class="px-6 py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-200 transition-colors">انصراف</button>
+        <button type="button" onclick="addItem()" id="btn-add-item" class="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2.5 rounded-xl shadow-md transition-all active:scale-95">افزودن به منو</button>
       </div>
     </div>
   </div>
 
-  <!-- اتصال به فایل مغز (app.js) -->
   <script src="app.js"></script>
 </body>
-        </html>
+  </html>
