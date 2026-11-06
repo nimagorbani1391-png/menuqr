@@ -65,18 +65,23 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative">
 
-  <div class="flex items-center gap-3">
-  <!-- لوگوی جدید ربات -->
-  <img src="logo.png" alt="MenuQR Logo" class="w-14 h-14 rounded-2xl object-cover shadow-[0_0_20px_rgba(99,102,241,0.4)] border border-indigo-500/30 hover:scale-105 transition-transform duration-300">
-  
-  <!-- متن برند -->
-  <div class="flex flex-col">
-    <span class="font-black text-2xl tracking-tight text-slate-900 leading-none">منو کیو آر</span>
-    <span class="text-[10px] text-indigo-600 font-bold mt-1 tracking-wider uppercase">Digital Menu System</span>
-  </div>
-    </div>
+  <nav class="absolute w-full z-50 top-0 bg-white/60 backdrop-blur-md border-b border-white/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center h-24 gap-4">
+      
+      <!-- کانتینر عکس با سایز ثابت (shrink-0) -->
+      <div class="w-14 h-14 shrink-0 relative flex items-center justify-center bg-slate-100 rounded-2xl overflow-hidden border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+        <img src="logo.png" alt="MenuQR" class="w-full h-full object-cover">
       </div>
+
+      <!-- متن برند -->
+      <div class="flex flex-col justify-center">
+        <span class="font-black text-2xl tracking-tight text-slate-900 leading-none">منو کیو آر</span>
+        <span class="text-[10px] text-indigo-600 font-bold mt-1 tracking-wider uppercase">Digital Menu System</span>
+      </div>
+
     </div>
+  </div>
   </nav>
 
   <header class="relative overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32 bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900">
