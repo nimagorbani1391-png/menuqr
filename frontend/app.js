@@ -1,13 +1,12 @@
 const API_BASE = 'https://menuqr-8v3o.onrender.com/api'; 
 let token = localStorage.getItem('menuqr_token');
 let currentSlug = '';
+let userRestaurantName = '';
 
 if (token) {
     document.getElementById('auth-section').classList.add('hidden');
     document.getElementById('dashboard-section').classList.remove('hidden');
-    fetchUserData();
-    fetchCategories();
-    fetchItems();
+    initDashboard();
 }
 
 function toggleAuth() {
@@ -49,7 +48,7 @@ async function doRegister() {
       body: JSON.stringify({ name, restaurantName, email, password })
     });
     let data;
-    try { data = await res.json(); } catch(e) { throw new Error("سرور پاسخ نداد. لطفا چند دقیقه صبر کنید (سرور در حال بیدار شدن است)."); }
+    try { data = await res.json(); } catch(e) { throw new Error("سرور پاسخ نداد. لطفا چند دقیقه صبر کنید."); }
     if (!res.ok) throw new Error(data.message || 'خطا در ثبت‌نام');
     
     alert('✅ حساب ساخته شد! حالا با ایمیل و رمز خود وارد شوید.');
@@ -57,7 +56,6 @@ async function doRegister() {
     document.getElementById('email').value = email;
   } catch (error) {
     err.innerText = error.message; err.classList.remove('hidden');
-    err.scrollIntoView({behavior: "smooth", block: "center"});
   } finally {
     btn.innerText = 'ساخت حساب جدید'; btn.disabled = false;
   }
@@ -87,23 +85,81 @@ async function doLogin() {
     localStorage.setItem('menuqr_token', token);
     document.getElementById('auth-section').classList.add('hidden');
     document.getElementById('dashboard-section').classList.remove('hidden');
-    fetchUserData(); fetchCategories(); fetchItems();
+    initDashboard();
   } catch (error) {
     err.innerText = error.message; err.classList.remove('hidden');
-    err.scrollIntoView({behavior: "smooth", block: "center"});
   } finally {
     btn.innerText = 'ورود به پنل'; btn.disabled = false;
   }
 }
 
+function logout() {
+  localStorage.removeItem('menuqr_token');
+  location.reload();
+}
+
+// ================== منطق داشبورد ==================
+
+function initDashboard() {
+    fetchUserData(); 
+    fetchCategories();
+    fetchItems();
+}
+
+function showView(viewId) {
+    // مخفی کردن همه ویوها
+    document.getElementById('view-dashboard').classList.add('hidden');
+    document.getElementById('view-foods').classList.add('hidden');
+    document.getElementById('view-categories').classList.add('hidden');
+    document.getElementById('view-qr').classList.add('hidden');
+
+    // حذف حالت فعال از همه تب‌ها
+    const tabs = ['tab-dashboard', 'tab-foods', 'tab-categories', 'tab-qr'];
+    tabs.forEach(t => {
+        const el = document.getElementById(t);
+        if(el) {
+            el.classList.remove('active-tab');
+            el.classList.add('text-slate-600');
+        }
+    });
+
+    // نمایش ویو درخواستی
+    document.getElementById(viewId).classList.remove('hidden');
+
+    // فعال کردن تب مربوطه
+    let activeTabId = '';
+    if(viewId === 'view-dashboard') activeTabId = 'tab-dashboard';
+    if(viewId === 'view-foods') activeTabId = 'tab-foods';
+    if(viewId === 'view-categories') activeTabId = 'tab-categories';
+    if(viewId === 'view-qr') activeTabId = 'tab-qr';
+    
+    const activeTabEl = document.getElementById(activeTabId);
+    if(activeTabEl) {
+        activeTabEl.classList.add('active-tab');
+        activeTabEl.classList.remove('text-slate-600');
+    }
+}
+
 async function fetchUserData() {
-  try {
-    const res = await fetch(`${API_BASE}/auth/me`, { headers: { 'Authorization': `Bearer ${token}` } });
-    if (res.status === 401) { logout(); return; }
-    const user = await res.json();
-    currentSlug = user.slug;
-    generateQR(currentSlug);
-  } catch (e) { generateQR('e7185c4e'); }
+    try {
+        const res = await fetch(`${API_BASE}/auth/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401) { logout(); return; }
+        const user = await res.json();
+        
+        currentSlug = user.slug;
+        userRestaurantName = user.restaurantName;
+        
+        document.getElementById('dash-restaurant-name').innerText = user.restaurantName || 'رستوران شما';
+        document.getElementById('dash-user-name').innerText = user.name;
+        
+        generateQR(currentSlug);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function openPublicMenu() {
+    window.open(`menu.html?slug=${currentSlug}`, '_blank');
 }
 
 function generateQR(slug) {
@@ -111,7 +167,7 @@ function generateQR(slug) {
   const container = document.getElementById('qrcode-container');
   container.innerHTML = ''; 
   try {
-    if (typeof QRCode !== 'undefined') new QRCode(container, { text: menuUrl, width: 128, height: 128, colorDark : "#4f46e5" });
+    if (typeof QRCode !== 'undefined') new QRCode(container, { text: menuUrl, width: 180, height: 180, colorDark : "#4f46e5" });
   } catch(e) {}
 }
 
@@ -124,82 +180,149 @@ function downloadQR() {
   else if(canvas) { link.href = canvas.toDataURL("image/png"); link.click(); }
 }
 
-function logout() {
-  localStorage.removeItem('menuqr_token');
-  location.reload();
-}
+// ================== دسته‌بندی‌ها ==================
 
 async function fetchCategories() {
   try {
     const res = await fetch(`${API_BASE}/categories`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (res.status === 401) { logout(); return; }
     const cats = await res.json();
-    document.getElementById('item-cat').innerHTML = '<option value="">لطفا یک دسته‌بندی انتخاب کنید...</option>' + cats.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
-  } catch (e) {}
+    
+    // آپدیت آمار
+    document.getElementById('stat-cats').innerText = cats.length;
+
+    // آپدیت لیست در تب دسته‌بندی
+    const list = document.getElementById('cats-list');
+    if(cats.length === 0) {
+        list.innerHTML = '<p class="text-center text-slate-400 text-sm py-4">هنوز دسته‌بندی نساخته‌اید.</p>';
+    } else {
+        list.innerHTML = cats.map(c => `
+            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                <span class="font-bold text-slate-700 text-sm">${c.name}</span>
+                <span class="text-xs text-slate-400" dir="ltr">${c._id}</span>
+            </div>
+        `).join('');
+    }
+
+    // آپدیت سلکت در مودال افزودن غذا
+    const select = document.getElementById('item-cat');
+    select.innerHTML = '<option value="">انتخاب کنید...</option>' + 
+      cats.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
+      
+  } catch (e) { console.error('خطا در گرفتن دسته‌بندی‌ها'); }
 }
 
 async function addCategory() {
   const name = document.getElementById('cat-name').value;
   if(!name) return alert("اسم دسته‌بندی را بنویسید");
-  const btn = document.getElementById('btn-add-cat');
-  btn.innerText = '...'; btn.disabled = true;
+  
   try {
-    await fetch(`${API_BASE}/categories`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ name }) });
+    await fetch(`${API_BASE}/categories`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
+        body: JSON.stringify({ name }) 
+    });
     document.getElementById('cat-name').value = '';
-    fetchCategories(); alert("دسته‌بندی اضافه شد");
-  } catch (err) { alert('خطا'); } finally { btn.innerText = 'افزودن'; btn.disabled = false; }
+    fetchCategories(); 
+  } catch (err) { alert('خطا در ساخت دسته‌بندی'); }
 }
+
+// ================== غذاها ==================
 
 async function fetchItems() {
   try {
     const res = await fetch(`${API_BASE}/items`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (res.status === 401) { logout(); return; }
     const items = await res.json();
+    
+    // آپدیت آمار
+    document.getElementById('stat-foods').innerText = items.length;
+
     const list = document.getElementById('items-list');
-    if (items.length === 0) { list.innerHTML = '<p class="text-center text-slate-400">غذایی نیست.</p>'; return; }
+    if (items.length === 0) { 
+        list.innerHTML = '<p class="p-6 text-center text-slate-500">هنوز غذایی به منو اضافه نکردی.</p>'; 
+        return; 
+    }
+    
     list.innerHTML = items.map(item => `
-      <div class="flex items-center justify-between p-3 border-b">
+      <div class="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors group">
         <div class="flex items-center gap-4">
-          ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-14 h-14 rounded-xl object-cover">` : `<div class="w-14 h-14 bg-slate-100 rounded-xl"></div>`}
+          ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-16 h-16 rounded-xl object-cover shadow-sm">` : `<div class="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">بدون عکس</div>`}
           <div>
-            <p class="font-bold text-sm ${!item.isActive ? 'text-gray-400 line-through' : ''}">${item.name}</p>
-            <p class="text-xs text-indigo-600">${item.price.toLocaleString()} تومان</p>
+            <p class="font-bold text-slate-800 text-lg ${!item.isActive ? 'text-slate-400 line-through' : ''}">${item.name}</p>
+            <p class="text-sm font-bold text-indigo-600">${item.price.toLocaleString()} تومان</p>
           </div>
         </div>
         <div class="flex gap-2">
-          <button onclick="toggleItem('${item._id}')" class="text-xs px-2 py-1 bg-orange-100 text-orange-600 rounded">${item.isActive ? 'ناموجود' : 'موجود'}</button>
-          <button onclick="deleteItem('${item._id}')" class="text-xs px-2 py-1 bg-red-100 text-red-600 rounded">حذف</button>
+          <button onclick="toggleItem('${item._id}')" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors ${item.isActive ? 'bg-orange-50 text-orange-600 hover:bg-orange-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}">
+            ${item.isActive ? 'ناموجود کن' : 'موجود کن'}
+          </button>
+          <button onclick="deleteItem('${item._id}')" class="px-4 py-2 rounded-xl text-xs font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+            حذف
+          </button>
         </div>
       </div>
     `).join('');
-  } catch(e) {}
+  } catch (e) { console.error(e); }
+}
+
+function openAddFoodModal() {
+    document.getElementById('add-food-modal').classList.remove('hidden');
+}
+
+function closeAddFoodModal() {
+    document.getElementById('add-food-modal').classList.add('hidden');
 }
 
 async function addItem() {
   const name = document.getElementById('item-name').value;
   const price = document.getElementById('item-price').value;
   const category = document.getElementById('item-cat').value;
-  if(!name || !price || !category) return alert("فیلدهای ضروری را پر کنید");
+  
+  if(!name || !price || !category) return alert("فیلدهای ضروری (نام، قیمت، دسته‌بندی) را پر کنید");
   
   const formData = new FormData();
-  formData.append('name', name); formData.append('price', price); formData.append('category', category); formData.append('description', document.getElementById('item-desc').value);
+  formData.append('name', name); 
+  formData.append('price', price); 
+  formData.append('category', category); 
+  formData.append('description', document.getElementById('item-desc').value);
+  
   const file = document.getElementById('item-image').files[0];
   if (file) formData.append('image', file);
 
   const btn = document.getElementById('btn-add-item');
   btn.innerText = 'در حال ذخیره...'; btn.disabled = true;
+  
   try {
-    await fetch(`${API_BASE}/items`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
-    document.getElementById('item-name').value = ''; document.getElementById('item-price').value = ''; 
-    fetchItems(); alert("غذا اضافه شد");
-  } catch(e) { alert('خطا در اضافه کردن غذا'); } finally { btn.innerText = 'افزودن به منو'; btn.disabled = false; }
+    const res = await fetch(`${API_BASE}/items`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
+    if(!res.ok) throw new Error('خطا در ذخیره');
+    
+    // ریست فرم
+    document.getElementById('item-name').value = ''; 
+    document.getElementById('item-price').value = ''; 
+    document.getElementById('item-desc').value = '';
+    document.getElementById('item-image').value = '';
+    
+    closeAddFoodModal();
+    fetchItems(); // آپدیت لیست
+  } catch(e) { 
+      alert('خطا در اضافه کردن غذا'); 
+  } finally { 
+      btn.innerText = 'افزودن به منو'; btn.disabled = false; 
+  }
 }
 
 async function toggleItem(id) {
-  await fetch(`${API_BASE}/items/${id}/toggle`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}` } });
-  fetchItems();
+  try {
+    await fetch(`${API_BASE}/items/${id}/toggle`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}` } });
+    fetchItems();
+  } catch (e) { alert('خطا در تغییر وضعیت'); }
 }
 
 async function deleteItem(id) {
-  if(!confirm('مطمئنی؟')) return;
-  await fetch(`${API_BASE}/items/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-  fetchItems();
-      }
+  if(!confirm('مطمئنی می‌خوای این غذا رو پاک کنی؟')) return;
+  try {
+    await fetch(`${API_BASE}/items/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+    fetchItems();
+  } catch (e) { alert('خطا در حذف'); }
+}
