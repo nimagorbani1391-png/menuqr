@@ -9,7 +9,6 @@
   
   <style>
     body { font-family: 'Vazirmatn', sans-serif; transition: background-color 0.3s, color 0.3s; }
-    /* مخفی کردن اسکرول بار در تب ها */
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
@@ -20,16 +19,44 @@
     .dark-mode .text-slate-500 { color: #94a3b8 !important; }
     .dark-mode .bg-slate-50 { background-color: #0f172a !important; }
     .dark-mode .bg-indigo-50 { background-color: #1e293b !important; }
+    
+    /* انیمیشن برای مودال‌ها */
+    .modal-enter { animation: modalIn 0.3s ease-out forwards; }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20">
 
+  <!-- مودال خوش‌آمدگویی (گرفتن اسم و شماره میز) -->
+  <div id="welcome-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl modal-enter text-center">
+      <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">👋</div>
+      <h2 class="text-2xl font-black text-slate-800 mb-2">خوش آمدید!</h2>
+      <p class="text-sm text-slate-500 mb-6">لطفاً برای مشاهده منو و سفارش، مشخصات خود را وارد کنید.</p>
+      
+      <div class="space-y-4 text-right">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">نام و نام خانوادگی</label>
+          <input type="text" id="customer-name" placeholder="مثلا: نیما قربانی" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">شماره میز (اختیاری)</label>
+          <input type="number" id="customer-table" placeholder="مثلا: ۴" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+      <button onclick="saveCustomerInfo()" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all active:scale-95">ورود به منو</button>
+    </div>
+  </div>
+
   <!-- هدر رستوران -->
-  <header class="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg sticky top-0 z-50">
+  <header class="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg sticky top-0 z-40">
     <div class="max-w-2xl mx-auto flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-extrabold" id="restaurant-name">در حال بارگذاری...</h1>
-        <p class="text-indigo-200 mt-1 text-sm">به منوی ما خوش آمدید 🌿</p>
+        <p class="text-indigo-200 mt-1 text-sm" id="welcome-message">به منوی ما خوش آمدید 🌿</p>
       </div>
       <button id="theme-toggle" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
         🌙
@@ -58,33 +85,106 @@
     </div>
   </div>
 
+  <!-- مودال جزئیات غذا -->
+  <div id="item-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl modal-enter overflow-hidden max-h-[90vh] flex flex-col">
+      <!-- دکمه بستن -->
+      <button onclick="closeItemModal()" class="absolute top-4 right-4 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center backdrop-blur-md z-10 transition-colors">✕</button>
+      
+      <div id="modal-image-container" class="w-full h-64 bg-slate-100 relative">
+        <!-- عکس اینجا قرار می‌گیرد -->
+      </div>
+      
+      <div class="p-6 overflow-y-auto">
+        <div class="flex justify-between items-start mb-2">
+          <h2 id="modal-title" class="text-2xl font-black text-slate-800">نام غذا</h2>
+          <span id="modal-price" class="text-xl font-extrabold text-indigo-600 whitespace-nowrap mr-4">۰ تومان</span>
+        </div>
+        
+        <div id="modal-tags" class="flex flex-wrap gap-2 mb-4">
+          <!-- تگ‌ها اینجا قرار می‌گیرند -->
+        </div>
+        
+        <p id="modal-description" class="text-slate-600 text-sm leading-relaxed mb-6">توضیحات غذا...</p>
+        
+        <div id="modal-ingredients-container" class="bg-slate-50 p-4 rounded-2xl border border-slate-100 hidden">
+          <h3 class="text-sm font-bold text-slate-800 mb-2">مواد اولیه:</h3>
+          <p id="modal-ingredients" class="text-xs text-slate-500 leading-relaxed">...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- دکمه شناور فراخوان گارسون -->
+  <button onclick="callWaiter()" class="fixed bottom-6 left-6 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 z-50 transition-transform hover:scale-105 active:scale-95 group">
+    <span class="relative flex h-3 w-3">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+    </span>
+    <span class="font-bold text-sm">فراخوان گارسون 🛎</span>
+  </button>
+
   <script>
     const API_BASE = 'https://menuqr-8v3o.onrender.com/api';
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
 
     let allCategories = [];
-    let allItems = []; // همه غذاها در یک آرایه مسطح
+    let allItems = [];
     let activeCategory = 'all';
     let searchQuery = '';
 
-    // ۱. گرفتن اطلاعات منو
+    // بررسی اطلاعات مشتری در بدو ورود
+    window.onload = () => {
+      const savedName = localStorage.getItem('customerName');
+      if (!savedName) {
+        document.getElementById('welcome-modal').classList.remove('hidden');
+      } else {
+        updateWelcomeMessage(savedName, localStorage.getItem('customerTable'));
+      }
+      fetchMenu();
+    };
+
+    // ذخیره اطلاعات مشتری
+    function saveCustomerInfo() {
+      const name = document.getElementById('customer-name').value.trim();
+      const table = document.getElementById('customer-table').value.trim();
+      
+      if (!name) {
+        alert('لطفا نام خود را وارد کنید.');
+        return;
+      }
+      
+      localStorage.setItem('customerName', name);
+      if (table) localStorage.setItem('customerTable', table);
+      
+      document.getElementById('welcome-modal').classList.add('hidden');
+      updateWelcomeMessage(name, table);
+    }
+
+    // آپدیت پیام خوش‌آمدگویی در هدر
+    function updateWelcomeMessage(name, table) {
+      const el = document.getElementById('welcome-message');
+      if (table) {
+        el.innerHTML = `خوش آمدید <strong>${name}</strong> | میز شماره <strong>${table}</strong>`;
+      } else {
+        el.innerHTML = `خوش آمدید <strong>${name}</strong>`;
+      }
+    }
+
+    // گرفتن اطلاعات منو
     async function fetchMenu() {
       if (!slug) {
         document.getElementById('restaurant-name').innerText = 'خطا در لینک';
         document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">لطفا با لینک اختصاصی رستوران وارد شوید.</p>';
         return;
       }
-
       try {
         const res = await fetch(`${API_BASE}/public/menu/${slug}`); 
         if (!res.ok) throw new Error('منو پیدا نشد');
-        
         const data = await res.json();
-        
         document.getElementById('restaurant-name').innerText = data.restaurant.restaurantName || 'منوی رستوران';
         
-        // پردازش داده‌ها برای راحتی کار
         allCategories = data.categories;
         allItems = [];
         data.categories.forEach(cat => {
@@ -92,91 +192,143 @@
             allItems.push({ ...item, categoryName: cat.name, categoryId: cat._id });
           });
         });
-
         renderCategoryTabs();
         filterAndRenderItems();
-
       } catch (error) {
         document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">خطا: منویی با این آدرس پیدا نشد.</p>';
       }
     }
 
-    // ۲. ساخت تب‌های دسته‌بندی
+    // ساخت تب‌های دسته‌بندی
     function renderCategoryTabs() {
       const container = document.getElementById('category-tabs');
-      let html = `
-        <button onclick="setCategory('all')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === 'all' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">
-          همه
-        </button>
-      `;
+      let html = `<button onclick="setCategory('all')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === 'all' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">همه</button>`;
       allCategories.forEach(cat => {
-        html += `
-          <button onclick="setCategory('${cat._id}')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === cat._id ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">
-            ${cat.name}
-          </button>
-        `;
+        html += `<button onclick="setCategory('${cat._id}')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === cat._id ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">${cat.name}</button>`;
       });
       container.innerHTML = html;
     }
 
-    // ۳. تغییر دسته‌بندی فعال
     function setCategory(catId) {
       activeCategory = catId;
-      renderCategoryTabs(); // آپدیت ظاهر دکمه‌ها
+      renderCategoryTabs();
       filterAndRenderItems();
     }
 
-    // ۴. فیلتر کردن و نمایش غذاها (بر اساس دسته‌بندی و جستجو)
+    // تابع ساخت تگ‌ها
+    function renderTags(tags) {
+      if (!tags || tags.length === 0) return '';
+      // دیکشنری رنگ تگ‌ها
+      const tagStyles = {
+        'spicy': { label: 'تند 🌶', color: 'bg-red-100 text-red-600' },
+        'vegetarian': { label: 'گیاهی 🌿', color: 'bg-green-100 text-green-600' },
+        'popular': { label: 'محبوب ⭐', color: 'bg-orange-100 text-orange-600' },
+        'gluten-free': { label: 'بدون گلوتن 🌾', color: 'bg-yellow-100 text-yellow-700' }
+      };
+      
+      return tags.map(tag => {
+        const style = tagStyles[tag] || { label: tag, color: 'bg-slate-100 text-slate-600' };
+        return `<span class="px-2 py-1 rounded-md text-[10px] font-bold ${style.color}">${style.label}</span>`;
+      }).join('');
+    }
+
+    // فیلتر و نمایش غذاها
     function filterAndRenderItems() {
       const listContainer = document.getElementById('menu-list');
-      
-      // فیلتر کردن
       const filteredItems = allItems.filter(item => {
         const matchCategory = activeCategory === 'all' || item.categoryId === activeCategory;
         const matchSearch = item.name.includes(searchQuery) || (item.description && item.description.includes(searchQuery));
         return matchCategory && matchSearch;
       });
 
-      // اگه چیزی پیدا نشد
       if (filteredItems.length === 0) {
-        listContainer.innerHTML = '<p class="text-center text-slate-500 py-10">غذایی با این مشخصات پیدا نشد.</p>';
+        listContainer.innerHTML = '<p class="text-center text-slate-500 py-10">غذایی پیدا نشد.</p>';
         return;
       }
 
-      // ساخت ظاهر کارت‌ها
       listContainer.innerHTML = filteredItems.map(item => `
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow">
-          ${item.image 
-            ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` 
-            : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
+        <div onclick="openItemModal('${item._id}')" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow cursor-pointer active:scale-95 transform duration-100">
+          ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
           <div class="flex-1">
-            <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
-            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
+            </div>
+            <div class="flex gap-1 mt-1 mb-2 flex-wrap">${renderTags(item.tags)}</div>
+            <p class="text-xs text-slate-500 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
             <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
           </div>
         </div>
       `).join('');
     }
 
-    // ۵. رویداد جستجو
+    // باز کردن مودال غذا
+    function openItemModal(itemId) {
+      const item = allItems.find(i => i._id === itemId);
+      if (!item) return;
+
+      const imgContainer = document.getElementById('modal-image-container');
+      if (item.image) {
+        imgContainer.innerHTML = `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-full h-full object-cover">`;
+      } else {
+        imgContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center text-slate-400">بدون عکس</div>`;
+      }
+
+      document.getElementById('modal-title').innerText = item.name;
+      document.getElementById('modal-price').innerText = `${item.price.toLocaleString()} تومان`;
+      document.getElementById('modal-description').innerText = item.description || 'توضیحاتی برای این غذا ثبت نشده است.';
+      
+      document.getElementById('modal-tags').innerHTML = renderTags(item.tags);
+
+      const ingredientsCont = document.getElementById('modal-ingredients-container');
+      if (item.ingredients) {
+        ingredientsCont.classList.remove('hidden');
+        document.getElementById('modal-ingredients').innerText = item.ingredients;
+      } else {
+        ingredientsCont.classList.add('hidden');
+      }
+
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    // بستن مودال غذا
+    function closeItemModal() {
+      document.getElementById('item-modal').classList.add('hidden');
+    }
+
+    // بستن مودال با کلیک بیرون از آن
+    document.getElementById('item-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeItemModal();
+    });
+
+    // فراخوان گارسون
+    function callWaiter() {
+      const name = localStorage.getItem('customerName') || 'مشتری';
+      const table = localStorage.getItem('customerTable') || 'نامشخص';
+      
+      // برای اینکه واقعی به نظر برسه، یه لودینگ کوتاه نشون میدیم
+      const btn = event.currentTarget;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<span class="font-bold text-sm">در حال ارسال...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        alert(`✅ درخواست شما ارسال شد!\nگارسون به میز شما (${table}) خواهد آمد.\n(${name} عزیز، ممنون از صبوری شما)`);
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }, 800);
+    }
+
+    // جستجو
     document.getElementById('search-input').addEventListener('input', (e) => {
       searchQuery = e.target.value.trim();
       filterAndRenderItems();
     });
 
-    // ۶. تغییر حالت شب و روز
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
+    // حالت شب
+    document.getElementById('theme-toggle').addEventListener('click', function() {
       document.body.classList.toggle('dark-mode');
-      if(document.body.classList.contains('dark-mode')) {
-        themeToggle.innerText = '☀️';
-      } else {
-        themeToggle.innerText = '🌙';
-      }
+      this.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
     });
-
-    // شروع کار
-    fetchMenu();
   </script>
 </body>
 </html>
