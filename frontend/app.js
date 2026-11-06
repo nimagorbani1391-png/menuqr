@@ -1,3 +1,7 @@
+window.onerror = function(msg, url, line) {
+    alert("⛔ خطای سایت:\n" + msg + "\nدر خط: " + line);
+    return false;
+};
 const API_BASE = 'https://menuqr-8v3o.onrender.com/api'; 
 let token = localStorage.getItem('menuqr_token');
 let currentSlug = '';
