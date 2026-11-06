@@ -5,86 +5,177 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>منوی رستوران</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+  
   <style>
-    body { font-family: 'Vazirmatn', sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Vazirmatn', sans-serif; transition: background-color 0.3s, color 0.3s; }
+    /* مخفی کردن اسکرول بار در تب ها */
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* حالت شب */
+    .dark-mode { background-color: #0f172a !important; color: #f8fafc !important; }
+    .dark-mode .bg-white { background-color: #1e293b !important; border-color: #334155 !important; }
+    .dark-mode .text-slate-800 { color: #f8fafc !important; }
+    .dark-mode .text-slate-500 { color: #94a3b8 !important; }
+    .dark-mode .bg-slate-50 { background-color: #0f172a !important; }
+    .dark-mode .bg-indigo-50 { background-color: #1e293b !important; }
   </style>
 </head>
-<body class="min-h-screen text-slate-800 antialiased pb-10">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-20">
 
-  <header class="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg mb-6">
-    <div class="max-w-2xl mx-auto text-center">
-      <h1 class="text-2xl font-extrabold" id="restaurant-name">در حال بارگذاری...</h1>
-      <p class="text-indigo-200 mt-2 text-sm">به منوی ما خوش آمدید 🌿</p>
+  <!-- هدر رستوران -->
+  <header class="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg sticky top-0 z-50">
+    <div class="max-w-2xl mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-extrabold" id="restaurant-name">در حال بارگذاری...</h1>
+        <p class="text-indigo-200 mt-1 text-sm">به منوی ما خوش آمدید 🌿</p>
+      </div>
+      <button id="theme-toggle" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
+        🌙
+      </button>
     </div>
   </header>
 
-  <div class="max-w-2xl mx-auto px-4">
-    <div id="menu-list" class="space-y-6">
+  <div class="max-w-2xl mx-auto px-4 mt-6">
+    
+    <!-- نوار جستجو -->
+    <div class="relative mb-6">
+      <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      </div>
+      <input type="text" id="search-input" placeholder="دنبال چه غذایی می‌گردید؟" class="w-full bg-white border border-slate-200 text-slate-800 rounded-2xl py-3 pr-12 pl-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm transition-all">
+    </div>
+
+    <!-- تب‌های دسته‌بندی -->
+    <div id="category-tabs" class="flex overflow-x-auto hide-scrollbar gap-2 mb-6 pb-2">
+      <!-- دکمه‌ها توسط جاوااسکریپت ساخته می‌شوند -->
+    </div>
+
+    <!-- لیست غذاها -->
+    <div id="menu-list" class="space-y-4">
       <p class="text-center text-slate-500 py-10">در حال دریافت منو...</p>
     </div>
   </div>
 
   <script>
     const API_BASE = 'https://menuqr-8v3o.onrender.com/api';
-    
-    // گرفتن slug از آدرس سایت (مثل: menu.html?slug=abc123)
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
 
+    let allCategories = [];
+    let allItems = []; // همه غذاها در یک آرایه مسطح
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    // ۱. گرفتن اطلاعات منو
     async function fetchMenu() {
       if (!slug) {
         document.getElementById('restaurant-name').innerText = 'خطا در لینک';
-        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">لطفا با لینک اختصاصی رستوران وارد شوید (پارامتر slug وجود ندارد).</p>';
+        document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">لطفا با لینک اختصاصی رستوران وارد شوید.</p>';
         return;
       }
 
       try {
         const res = await fetch(`${API_BASE}/public/menu/${slug}`); 
-        
         if (!res.ok) throw new Error('منو پیدا نشد');
         
         const data = await res.json();
         
-        // نمایش اسم رستوران
         document.getElementById('restaurant-name').innerText = data.restaurant.restaurantName || 'منوی رستوران';
         
-        renderMenu(data.categories);
+        // پردازش داده‌ها برای راحتی کار
+        allCategories = data.categories;
+        allItems = [];
+        data.categories.forEach(cat => {
+          cat.items.forEach(item => {
+            allItems.push({ ...item, categoryName: cat.name, categoryId: cat._id });
+          });
+        });
+
+        renderCategoryTabs();
+        filterAndRenderItems();
+
       } catch (error) {
         document.getElementById('menu-list').innerHTML = '<p class="text-center text-red-500 py-10">خطا: منویی با این آدرس پیدا نشد.</p>';
       }
     }
 
-    function renderMenu(categories) {
-      const listContainer = document.getElementById('menu-list');
+    // ۲. ساخت تب‌های دسته‌بندی
+    function renderCategoryTabs() {
+      const container = document.getElementById('category-tabs');
+      let html = `
+        <button onclick="setCategory('all')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === 'all' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">
+          همه
+        </button>
+      `;
+      allCategories.forEach(cat => {
+        html += `
+          <button onclick="setCategory('${cat._id}')" class="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === cat._id ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200'}">
+            ${cat.name}
+          </button>
+        `;
+      });
+      container.innerHTML = html;
+    }
 
-      if(categories.length === 0) {
-         listContainer.innerHTML = '<p class="text-center text-slate-500">هنوز غذایی به منو اضافه نشده است.</p>';
-         return;
+    // ۳. تغییر دسته‌بندی فعال
+    function setCategory(catId) {
+      activeCategory = catId;
+      renderCategoryTabs(); // آپدیت ظاهر دکمه‌ها
+      filterAndRenderItems();
+    }
+
+    // ۴. فیلتر کردن و نمایش غذاها (بر اساس دسته‌بندی و جستجو)
+    function filterAndRenderItems() {
+      const listContainer = document.getElementById('menu-list');
+      
+      // فیلتر کردن
+      const filteredItems = allItems.filter(item => {
+        const matchCategory = activeCategory === 'all' || item.categoryId === activeCategory;
+        const matchSearch = item.name.includes(searchQuery) || (item.description && item.description.includes(searchQuery));
+        return matchCategory && matchSearch;
+      });
+
+      // اگه چیزی پیدا نشد
+      if (filteredItems.length === 0) {
+        listContainer.innerHTML = '<p class="text-center text-slate-500 py-10">غذایی با این مشخصات پیدا نشد.</p>';
+        return;
       }
 
-      // رندر کردن دسته‌بندی‌ها و غذاهای هر دسته
-      listContainer.innerHTML = categories.map(cat => `
-        <div class="mb-8">
-          <h2 class="text-lg font-extrabold text-indigo-900 mb-4 border-b border-indigo-100 pb-2">${cat.name}</h2>
-          <div class="space-y-4">
-            ${cat.items.map(item => `
-              <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center">
-                ${item.image 
-                  ? `<img src="https://menuqr-8v3o.onrender.com${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` 
-                  : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
-                <div class="flex-1">
-                  <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
-                  <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
-                  <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
-                </div>
-              </div>
-            `).join('')}
+      // ساخت ظاهر کارت‌ها
+      listContainer.innerHTML = filteredItems.map(item => `
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-center hover:shadow-md transition-shadow">
+          ${item.image 
+            ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-24 h-24 rounded-xl object-cover shadow-sm">` 
+            : `<div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs">بدون عکس</div>`}
+          <div class="flex-1">
+            <h3 class="font-bold text-slate-800 text-lg">${item.name}</h3>
+            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.description || 'بدون توضیحات'}</p>
+            <p class="font-extrabold text-indigo-600 mt-2">${item.price.toLocaleString()} تومان</p>
           </div>
         </div>
       `).join('');
     }
 
+    // ۵. رویداد جستجو
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+      filterAndRenderItems();
+    });
+
+    // ۶. تغییر حالت شب و روز
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')) {
+        themeToggle.innerText = '☀️';
+      } else {
+        themeToggle.innerText = '🌙';
+      }
+    });
+
+    // شروع کار
     fetchMenu();
   </script>
 </body>
