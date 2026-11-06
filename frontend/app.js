@@ -98,8 +98,6 @@ function logout() {
   location.reload();
 }
 
-// ================== منطق داشبورد ==================
-
 function initDashboard() {
     fetchUserData(); 
     fetchCategories();
@@ -107,13 +105,11 @@ function initDashboard() {
 }
 
 function showView(viewId) {
-    // مخفی کردن همه ویوها
     document.getElementById('view-dashboard').classList.add('hidden');
     document.getElementById('view-foods').classList.add('hidden');
     document.getElementById('view-categories').classList.add('hidden');
     document.getElementById('view-qr').classList.add('hidden');
 
-    // حذف حالت فعال از همه تب‌ها
     const tabs = ['tab-dashboard', 'tab-foods', 'tab-categories', 'tab-qr'];
     tabs.forEach(t => {
         const el = document.getElementById(t);
@@ -123,10 +119,8 @@ function showView(viewId) {
         }
     });
 
-    // نمایش ویو درخواستی
     document.getElementById(viewId).classList.remove('hidden');
 
-    // فعال کردن تب مربوطه
     let activeTabId = '';
     if(viewId === 'view-dashboard') activeTabId = 'tab-dashboard';
     if(viewId === 'view-foods') activeTabId = 'tab-foods';
@@ -162,36 +156,14 @@ function openPublicMenu() {
     window.open(`menu.html?slug=${currentSlug}`, '_blank');
 }
 
-function generateQR(slug) {
-  const menuUrl = `${window.location.origin}/menu.html?slug=${slug}`;
-  const container = document.getElementById('qrcode-container');
-  container.innerHTML = ''; 
-  try {
-    if (typeof QRCode !== 'undefined') new QRCode(container, { text: menuUrl, width: 180, height: 180, colorDark : "#4f46e5" });
-  } catch(e) {}
-}
-
-function downloadQR() {
-  const img = document.querySelector('#qrcode-container img');
-  const canvas = document.querySelector('#qrcode-container canvas');
-  const link = document.createElement('a');
-  link.download = 'menu-qr.png';
-  if(img) { link.href = img.src; link.click(); }
-  else if(canvas) { link.href = canvas.toDataURL("image/png"); link.click(); }
-}
-
-// ================== دسته‌بندی‌ها ==================
-
 async function fetchCategories() {
   try {
     const res = await fetch(`${API_BASE}/categories`, { headers: { 'Authorization': `Bearer ${token}` } });
     if (res.status === 401) { logout(); return; }
     const cats = await res.json();
     
-    // آپدیت آمار
     document.getElementById('stat-cats').innerText = cats.length;
 
-    // آپدیت لیست در تب دسته‌بندی
     const list = document.getElementById('cats-list');
     if(cats.length === 0) {
         list.innerHTML = '<p class="text-center text-slate-400 text-sm py-4">هنوز دسته‌بندی نساخته‌اید.</p>';
@@ -199,12 +171,10 @@ async function fetchCategories() {
         list.innerHTML = cats.map(c => `
             <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
                 <span class="font-bold text-slate-700 text-sm">${c.name}</span>
-                <span class="text-xs text-slate-400" dir="ltr">${c._id}</span>
             </div>
         `).join('');
     }
 
-    // آپدیت سلکت در مودال افزودن غذا
     const select = document.getElementById('item-cat');
     select.innerHTML = '<option value="">انتخاب کنید...</option>' + 
       cats.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
@@ -227,7 +197,24 @@ async function addCategory() {
   } catch (err) { alert('خطا در ساخت دسته‌بندی'); }
 }
 
-// ================== غذاها ==================
+// ⚠️ بخش دوم (کدهای غذاها و QR) را دقیقاً زیر این خط اضافه کنید
+function generateQR(slug) {
+  const menuUrl = `${window.location.origin}/menu.html?slug=${slug}`;
+  const container = document.getElementById('qrcode-container');
+  container.innerHTML = ''; 
+  try {
+    if (typeof QRCode !== 'undefined') new QRCode(container, { text: menuUrl, width: 180, height: 180, colorDark : "#4f46e5" });
+  } catch(e) {}
+}
+
+function downloadQR() {
+  const img = document.querySelector('#qrcode-container img');
+  const canvas = document.querySelector('#qrcode-container canvas');
+  const link = document.createElement('a');
+  link.download = 'menu-qr.png';
+  if(img) { link.href = img.src; link.click(); }
+  else if(canvas) { link.href = canvas.toDataURL("image/png"); link.click(); }
+}
 
 async function fetchItems() {
   try {
@@ -235,7 +222,6 @@ async function fetchItems() {
     if (res.status === 401) { logout(); return; }
     const items = await res.json();
     
-    // آپدیت آمار
     document.getElementById('stat-foods').innerText = items.length;
 
     const list = document.getElementById('items-list');
@@ -247,7 +233,7 @@ async function fetchItems() {
     list.innerHTML = items.map(item => `
       <div class="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors group">
         <div class="flex items-center gap-4">
-          ${item.image ? `<img src="${API_BASE.replace('/api','')}${item.image}" class="w-16 h-16 rounded-xl object-cover shadow-sm">` : `<div class="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">بدون عکس</div>`}
+          ${item.image ? `<img src="${item.image.startsWith('http') ? item.image : API_BASE.replace('/api','') + item.image}" loading="lazy" class="w-16 h-16 rounded-xl object-cover shadow-sm">` : `<div class="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">بدون عکس</div>`}
           <div>
             <p class="font-bold text-slate-800 text-lg ${!item.isActive ? 'text-slate-400 line-through' : ''}">${item.name}</p>
             <p class="text-sm font-bold text-indigo-600">${item.price.toLocaleString()} تومان</p>
@@ -297,14 +283,13 @@ async function addItem() {
     const res = await fetch(`${API_BASE}/items`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
     if(!res.ok) throw new Error('خطا در ذخیره');
     
-    // ریست فرم
     document.getElementById('item-name').value = ''; 
     document.getElementById('item-price').value = ''; 
     document.getElementById('item-desc').value = '';
     document.getElementById('item-image').value = '';
     
     closeAddFoodModal();
-    fetchItems(); // آپدیت لیست
+    fetchItems(); 
   } catch(e) { 
       alert('خطا در اضافه کردن غذا'); 
   } finally { 
