@@ -321,7 +321,14 @@ async function deleteItem(id) {
     fetchItems();
   } catch (e) { alert('خطا در حذف'); }
 }
-async function copyMenuLink() {
+function copyMenuLink() {
+    if (!currentSlug) {
+        alert('اطلاعات رستوران در حال لود شدن است، لطفا یک لحظه دیگر تلاش کنید.');
+        return;
+    }
+    // باز کردن منو در همین صفحه (بدون تب جدید)
+    window.location.href = `menu.html?slug=${currentSlug}`;
+} {
     if (!currentSlug) {
         alert('لطفا چند لحظه صبر کنید تا اطلاعات رستوران لود شود.');
         return;
