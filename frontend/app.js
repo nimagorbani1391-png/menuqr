@@ -3,6 +3,7 @@ let token = localStorage.getItem('menuqr_token');
 let currentSlug = '';
 let userRestaurantName = '';
 
+// اگه توکن داریم، برو داشبورد
 if (token) {
     document.getElementById('auth-section').classList.add('hidden');
     document.getElementById('dashboard-section').classList.remove('hidden');
@@ -141,7 +142,6 @@ async function fetchUserData() {
         const user = await res.json();
         
         currentSlug = user.slug;
-        document.getElementById('public-menu-btn').href = `menu.html?slug=${user.slug}&t=${Date.now()}`;
         userRestaurantName = user.restaurantName;
         
         document.getElementById('dash-restaurant-name').innerText = user.restaurantName || 'رستوران شما';
@@ -153,19 +153,17 @@ async function fetchUserData() {
     }
 }
 
- {
-    // ساخت یک لینک مجازی برای باز شدن سریع‌تر و مطمئن‌تر
-    const link = document.createElement('a');
-    link.href = `menu.html?slug=${currentSlug}`;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-} {
-    window.open(`menu.html?slug=${currentSlug}`, '_blank');
+// این تابع رو کاملا تمیز کردیم که هیچی رو خراب نکنه
+function copyMenuLink() {
+    if (!currentSlug) {
+        alert('اطلاعات رستوران در حال لود شدن است، لطفا یک لحظه دیگر تلاش کنید.');
+        return;
+    }
+    // باز کردن منو در همین تب برای دور زدن باگ مرورگر
+    window.location.href = `menu.html?slug=${currentSlug}`;
 }
 
+// ⚠️ بخش دوم (کدهای غذاها، دسته‌بندی‌ها و QR) را دقیقاً زیر این خط اضافه کنید
 async function fetchCategories() {
   try {
     const res = await fetch(`${API_BASE}/categories`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -207,7 +205,6 @@ async function addCategory() {
   } catch (err) { alert('خطا در ساخت دسته‌بندی'); }
 }
 
-// ⚠️ بخش دوم (کدهای غذاها و QR) را دقیقاً زیر این خط اضافه کنید
 function generateQR(slug) {
   const menuUrl = `${window.location.origin}/menu.html?slug=${slug}`;
   const container = document.getElementById('qrcode-container');
@@ -320,28 +317,4 @@ async function deleteItem(id) {
     await fetch(`${API_BASE}/items/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     fetchItems();
   } catch (e) { alert('خطا در حذف'); }
-}
-function copyMenuLink() {
-    if (!currentSlug) {
-        alert('اطلاعات رستوران در حال لود شدن است، لطفا یک لحظه دیگر تلاش کنید.');
-        return;
-    }
-    // باز کردن منو در همین صفحه (بدون تب جدید)
-    window.location.href = `menu.html?slug=${currentSlug}`;
-} {
-    if (!currentSlug) {
-        alert('لطفا چند لحظه صبر کنید تا اطلاعات رستوران لود شود.');
-        return;
-    }
-    // ساخت لینک کامل و اختصاصی
-    const menuUrl = `${window.location.origin}/menu.html?slug=${currentSlug}`;
-    
-    try {
-        // کپی کردن توی کلیپ‌بورد گوشی
-        await navigator.clipboard.writeText(menuUrl);
-        alert('✅ لینک منو با موفقیت کپی شد!\nحالا می‌تونید توی یه تب جدید پیستش کنید و ببینید.');
-    } catch (err) {
-        // اگه مرورگر اجازه کپی نداد، بهش نشونش میدیم
-        prompt('مرورگر شما اجازه کپی خودکار نداد. لطفا این لینک را دستی کپی کنید:', menuUrl);
-    }
 }
