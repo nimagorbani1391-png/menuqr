@@ -28,28 +28,20 @@
     }
     @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
-    .glass-btn {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    /* دکمه‌های ساده (بدون افکت شیشه‌ای) */
+    .btn-primary {
+      background-color: #4f46e5;
+      border: 1px solid #4338ca;
       transition: all 0.3s ease;
     }
-    .glass-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+    .btn-primary:hover { background-color: #4338ca; transform: translateY(-2px); }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.3s ease;
     }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-      transition: background 0.3s ease;
-    }
-    .glass-card:hover { background: rgba(255, 255, 255, 0.1); }
+    .btn-outline:hover { background-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
     .phone-mockup { perspective: 1000px; }
     .phone-body {
@@ -81,16 +73,14 @@
   <div id="progress-bar" class="fixed top-0 left-0 h-1.5 bg-gradient-to-r from-cyan-400 to-indigo-600 z-[100] transition-all duration-75 ease-out" style="width: 0%;"></div>
 
   <!-- منوی بالا -->
-  <nav class="absolute w-full z-50 top-0 bg-white/60 backdrop-blur-md border-b border-white/20">
+  <nav class="absolute w-full z-50 top-0 bg-white/80 backdrop-blur-sm border-b border-white/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center h-24 gap-4">
         
-        <!-- کانتینر عکس با افکت ظاهر شدن و درخشش -->
-        <div class="logo-pop shine-effect w-14 h-14 shrink-0 relative flex items-center justify-center bg-slate-100 rounded-2xl border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+        <div class="logo-pop shine-effect w-14 h-14 shrink-0 relative flex items-center justify-center bg-slate-100 rounded-2xl border border-indigo-500/30 shadow-md">
           <img src="logo.png" alt="MenuQR" class="w-full h-full object-cover rounded-2xl">
         </div>
 
-        <!-- متن برند -->
         <div class="flex flex-col justify-center">
           <span class="font-black text-2xl tracking-tight text-slate-900 leading-none">منو کیو آر</span>
           <span class="text-[10px] text-indigo-600 font-bold mt-1 tracking-wider uppercase">Digital Menu System</span>
@@ -105,7 +95,7 @@
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         
         <div class="text-center lg:text-right">
-          <!-- ۲. تیتر با افکت تایپ شدن -->
+          <!-- تیتر با افکت تایپ شدن -->
           <h1 id="typewriter-heading" class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tight mb-8 h-[120px] md:h-[160px]"></h1>
           
           <p class="text-sm md:text-base text-indigo-200 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 italic" data-aos="fade-up">
@@ -113,8 +103,8 @@
           </p>
           
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start" data-aos="fade-up" data-aos-delay="200">
-            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl">ورود به پنل مدیریت</a>
-            <a href="login.html" class="glass-btn text-white font-bold text-lg px-8 py-4 rounded-2xl bg-indigo-500/80 border-indigo-400">شروع رایگان</a>
+            <a href="login.html" class="btn-outline text-white font-bold text-lg px-8 py-4 rounded-2xl">ورود به پنل مدیریت</a>
+            <a href="login.html" class="btn-primary text-white font-bold text-lg px-8 py-4 rounded-2xl">شروع رایگان</a>
           </div>
         </div>
 
@@ -132,10 +122,6 @@
                 <div class="bg-white p-2 rounded-lg shadow-sm flex gap-2 items-center">
                   <div class="w-12 h-12 bg-green-200 rounded-md flex items-center justify-center text-xl">🍕</div>
                   <div><h4 class="font-bold text-xs">پیتزا پپرونی</h4><p class="text-[10px] font-bold text-indigo-600">۱۸۰,۰۰۰ تومان</p></div>
-                </div>
-                <div class="bg-white p-2 rounded-lg shadow-sm flex gap-2 items-center opacity-50">
-                  <div class="w-12 h-12 bg-slate-200 rounded-md flex items-center justify-center text-xl">🥤</div>
-                  <div><h4 class="font-bold text-xs line-through">نوشیدنی</h4><p class="text-[10px] text-slate-400">ناموجود</p></div>
                 </div>
               </div>
             </div>
@@ -165,55 +151,36 @@
   </div>
 
   <!-- ⚠️ بخش دوم (امکانات و نظرات) را دقیقاً زیر این خط اضافه کنید -->
-  <!-- 🌌 بخش امکانات با افکت اسکرول فضایی -->
-<div id="space-section" class="py-32 bg-[#050510] relative overflow-hidden flex items-center justify-center">
-  
-  <style>
-    .nebula-1 { background: radial-gradient(circle, rgba(99,102,241,0.8) 0%, rgba(99,102,241,0) 70%); }
-    .nebula-2 { background: radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(168,85,247,0) 70%); }
-    .nebula-3 { background: radial-gradient(circle, rgba(6,182,212,0.8) 0%, rgba(6,182,212,0) 70%); }
-    .stars {
-      width: 2px; height: 2px; background: transparent;
-      box-shadow: 10vw 10vh #fff, 20vw 30vh #fff, 30vw 15vh #fff, 40vw 40vh #fff, 50vw 20vh #fff, 
-                  60vw 50vh #fff, 70vw 10vh #fff, 80vw 60vh #fff, 90vw 30vh #fff, 15vw 70vh #fff,
-                  35vw 80vh #fff, 55vw 90vh #fff, 75vw 75vh #fff, 95vw 85vh #fff, 25vw 50vh #fff;
-      animation: twinkle 4s infinite alternate;
-    }
-    @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
-  </style>
-
-  <div id="nebula-1" class="nebula-1 absolute w-[400px] h-[400px] rounded-full blur-[60px] opacity-60 pointer-events-none transition-transform duration-75 ease-out top-1/4 -right-20"></div>
-  <div id="nebula-2" class="nebula-2 absolute w-[500px] h-[500px] rounded-full blur-[80px] opacity-50 pointer-events-none transition-transform duration-75 ease-out top-1/2 -left-40"></div>
-  <div id="nebula-3" class="nebula-3 absolute w-[300px] h-[300px] rounded-full blur-[50px] opacity-40 pointer-events-none transition-transform duration-75 ease-out bottom-0 right-1/4"></div>
-
-  <div id="stars-layer" class="absolute inset-0 pointer-events-none transition-transform duration-75 ease-out z-0">
-    <div class="stars absolute top-0 left-0"></div>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+  <!-- بخش امکانات (تمیز، بدون افکت شیشه‌ای و کهکشانی) -->
+<div class="py-24 bg-slate-900 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-20" data-aos="fade-up">
-      <p class="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">قابلیت‌های کهکشانی منو کیو آر</p>
+      <p class="text-3xl md:text-4xl font-black text-white">چرا باید از منو کیو آر استفاده کنید؟</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="glass-card p-8 rounded-3xl relative z-10 border border-white/10" data-aos="fade-up">
-        <div class="w-14 h-14 bg-white/5 text-indigo-400 rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-[0_0_15px_rgba(99,102,241,0.4)]">
+      
+      <!-- کارت 1 (ساده و تمیز) -->
+      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-14 h-14 bg-slate-700 text-indigo-400 rounded-2xl flex items-center justify-center mb-6">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
         </div>
         <h3 class="text-xl font-bold text-white mb-3">تولید QR Code اختصاصی</h3>
         <p class="text-slate-300 leading-relaxed text-sm">سیستم به‌طور خودکار کدهای QR اختصاصی را برای رستوران شما تولید می‌کند تا مشتریان با اسکن کیو ار کد اختصاصی رستوران، به منو دسترسی داشته باشند.</p>
       </div>
       
-      <div class="glass-card p-8 rounded-3xl relative z-10 border border-white/10" data-aos="fade-up" data-aos-delay="100">
-        <div class="w-14 h-14 bg-white/5 text-purple-400 rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+      <!-- کارت 2 (ساده و تمیز) -->
+      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-14 h-14 bg-slate-700 text-purple-400 rounded-2xl flex items-center justify-center mb-6">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
         </div>
         <h3 class="text-xl font-bold text-white mb-3">مدیریت آنی و لحظه‌ای</h3>
         <p class="text-slate-300 leading-relaxed text-sm">مدیریت لحظه‌ای قیمت‌ها و موجودی محصولات. تغییرات اعمال‌شده در پنل مدیریت، بلافاصله بر روی منوی در دسترس مشتریان به‌روزرسانی می‌شوند.</p>
       </div>
       
-      <div class="glass-card p-8 rounded-3xl relative z-10 border border-white/10" data-aos="fade-up" data-aos-delay="200">
-        <div class="w-14 h-14 bg-white/5 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+      <!-- کارت 3 (ساده و تمیز) -->
+      <div class="bg-slate-800 border border-slate-700 shadow-xl p-8 rounded-3xl relative z-10" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-14 h-14 bg-slate-700 text-cyan-400 rounded-2xl flex items-center justify-center mb-6">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
         </div>
         <h3 class="text-xl font-bold text-white mb-3">نمایش تصویری محصولات</h3>
@@ -268,7 +235,7 @@
     </div>
     
     <div class="space-y-4">
-      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up">
+      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up">
         <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
           <span>آیا برای استفاده از MenuQR نیاز به دانش فنی دارم؟</span>
           <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
@@ -276,7 +243,7 @@
         <div class="p-6 pt-0 text-slate-400 leading-relaxed">خیر! پنل مدیریت ما به گونه‌ای طراحی شده که هر کسی بدون نیاز به دانش برنامه‌نویسی بتواند منوی خود را مدیریت کند. کافیست عکس و قیمت غذاها را وارد کنید.</div>
       </details>
       
-      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
         <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
           <span>آیا به اینترنت پرسرعت نیاز دارم؟</span>
           <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
@@ -284,7 +251,7 @@
         <div class="p-6 pt-0 text-slate-400 leading-relaxed">سیستم ما بهینه‌سازی شده است و با اینترنت معمولی موبایل نیز به سرعت لود می‌شود. ما از فناوری‌های مدرن برای کاهش حجم استفاده کرده‌ایم.</div>
       </details>
 
-      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
         <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
           <span>چگونه اشتراک VIP را خریداری کنم؟</span>
           <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
@@ -292,7 +259,7 @@
         <div class="p-6 pt-0 text-slate-400 leading-relaxed">پس از ثبت‌نام و ورود به پنل مدیریت، در بخش تنظیمات می‌توانید با کلیک روی دکمه ارتقا، از طریق درگاه‌های بانکی معتبر (مانند زرین‌پال) پرداخت را انجام دهید.</div>
       </details>
 
-      <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+      <details class="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
         <summary class="flex justify-between items-center p-6 cursor-pointer text-white font-bold list-none [&::-webkit-details-marker]:hidden">
           <span>آیا می‌توانم بعداً منویم را تغییر دهم؟</span>
           <span class="transition group-open:rotate-180"><svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span>
@@ -303,7 +270,7 @@
   </div>
 </div>
 
-<!-- ⚠️ بخش سوم (فوتر، دکمه روبیکا و اسکریپت‌ها) را دقیقاً زیر این خط اضافه کنید -->
+<!-- ⚠️ بخش سوم (فوتر و اسکریپت‌ها) را دقیقاً زیر این خط اضافه کنید -->
     <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <div class="flex items-center justify-center gap-2 mb-6">
@@ -360,23 +327,7 @@
       document.getElementById("progress-bar").style.width = scrolled + "%";
     });
 
-    // ۴. افکت اسکرول فضایی (Space Parallax)
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const nebula1 = document.getElementById('nebula-1');
-      const nebula2 = document.getElementById('nebula-2');
-      const nebula3 = document.getElementById('nebula-3');
-      const stars = document.getElementById('stars-layer');
-
-      if (nebula1 && nebula2 && nebula3 && stars) {
-        nebula1.style.transform = `translateY(${scrollY * 0.2}px) scale(${1 + scrollY * 0.0005})`;
-        nebula2.style.transform = `translateY(${scrollY * -0.15}px) scale(${1 + scrollY * 0.0003})`;
-        nebula3.style.transform = `translateY(${scrollY * 0.1}px) scale(${1 + scrollY * 0.0008})`;
-        stars.style.transform = `translateY(${scrollY * 0.05}px)`;
-      }
-    });
-
-    // ۵. انیمیشن تایپ شدن متن (Typewriter)
+    // ۴. انیمیشن تایپ شدن متن (Typewriter)
     const el = document.getElementById('typewriter-heading');
     const p1 = "منوی کاغذی را ";
     const p2 = "دیجیتال";
@@ -407,7 +358,6 @@
         }
     }
 
-    // شروع تایپ بعد از لود شدن صفحه
     document.addEventListener("DOMContentLoaded", () => {
         setTimeout(typeWriter, 500);
     });
