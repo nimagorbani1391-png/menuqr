@@ -248,7 +248,7 @@
     async function fetchMenu() {
       if (!slug) return;
       try {
-        const res = await fetch(`${API_BASE}/public/menu/${slug}`); 
+        const res = await fetch(`${API_BASE}/public/menu/${slug}?t=${Date.now()}`); 
         if (!res.ok) throw new Error('منو پیدا نشد');
         const data = await res.json();
         
